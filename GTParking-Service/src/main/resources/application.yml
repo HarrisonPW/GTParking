@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: GT-Parking
+  datasource:
+    url: jdbc:sqlserver://parkingsystem.database.windows.net:1433;databaseName=ParkingSystem
+    username: puxuan
+    password: Wpx20010304!
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password: 123456
+server:
+  # edit the port of the application here
+  port: 8082
+
+
