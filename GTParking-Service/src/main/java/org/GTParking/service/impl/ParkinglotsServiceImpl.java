@@ -1,11 +1,11 @@
 package org.GTParking.service.impl;
 
 import org.GTParking.bean.PageResponse;
+import org.GTParking.convert.ParkinglotConverter;
 import org.GTParking.entity.po.Parkinglots;
 import org.GTParking.dao.ParkinglotsDao;
 import org.GTParking.entity.request.ParkinglotsRequest;
 import org.GTParking.service.ParkinglotsService;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -25,8 +25,7 @@ public class ParkinglotsServiceImpl implements ParkinglotsService {
 
     @Override
     public PageResponse<Parkinglots> queryByPage(ParkinglotsRequest parkinglotsRequest) {
-        Parkinglots parkinglots = new Parkinglots();
-        BeanUtils.copyProperties(parkinglotsRequest, parkinglots);
+        Parkinglots parkinglots = ParkinglotConverter.INSTANCE.convertReqToParkinglot(parkinglotsRequest);
         PageResponse<Parkinglots> pageResponse = new PageResponse<>();
         pageResponse.setCurrent(parkinglotsRequest.getPageNo());
         pageResponse.setPageSize(parkinglotsRequest.getPageSize());
