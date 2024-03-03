@@ -9,7 +9,6 @@ public interface ParkinglotsService {
 
     Parkinglots queryById(Integer parkinglotid);
 
-
     PageResponse<Parkinglots> queryByPage(ParkinglotsRequest parkinglotsRequest);
 
 
