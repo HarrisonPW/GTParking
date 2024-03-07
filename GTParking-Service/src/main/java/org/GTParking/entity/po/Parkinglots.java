@@ -18,5 +18,11 @@ public class Parkinglots implements Serializable {
 
     private Integer currentspotsnum;
 
+    private Integer availableSpots;
+
+    private Double XCoordinate;
+
+    private Double YCoordinate;
+
 }
 

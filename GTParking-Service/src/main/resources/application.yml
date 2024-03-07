@@ -4,7 +4,7 @@ spring:
   datasource:
     url: jdbc:sqlserver://parkingsystem.database.windows.net:1433;databaseName=ParkingSystem
     username: puxuan
-    password: xxxxxxxx
+    password: GTParkingSystem!
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
   redis:
     host: 127.0.0.1
@@ -12,6 +12,6 @@ spring:
     password: 123456
 server:
   # edit the port of the application here
-  port: 8082
+  port: 8080
 
 

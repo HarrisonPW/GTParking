@@ -11,6 +11,7 @@
     <modules>
         <module>GTParking-Service</module>
         <module>GTParking-Common</module>
+        <module>GTParking-Swagger</module>
     </modules>
 
     <properties>

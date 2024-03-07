@@ -19,4 +19,6 @@ public interface ParkinglotsService {
 
     boolean deleteById(Integer parkinglotid);
 
+    PageResponse<Parkinglots> queryAllByAvailableSpotsRanking(ParkinglotsRequest parkinglotsRequest);
+
 }

@@ -17,4 +17,10 @@ public class ParkinglotsRequest extends PageRequest implements Serializable {
     private Integer totalspotsnum;
 
     private Integer currentspotsnum;
+
+    private Integer availableSpots;
+
+    private Double XCoordinate;
+
+    private Double YCoordinate;
 }

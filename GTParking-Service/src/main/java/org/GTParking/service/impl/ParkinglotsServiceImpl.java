@@ -53,4 +53,17 @@ public class ParkinglotsServiceImpl implements ParkinglotsService {
     public boolean deleteById(Integer parkinglotid) {
         return this.parkinglotsDao.deleteById(parkinglotid) > 0;
     }
+
+    @Override
+    public PageResponse<Parkinglots> queryAllByAvailableSpotsRanking(ParkinglotsRequest parkinglotsRequest) {
+        PageResponse<Parkinglots> pageResponse = new PageResponse<>();
+        pageResponse.setCurrent(parkinglotsRequest.getPageNo());
+        pageResponse.setPageSize(parkinglotsRequest.getPageSize());
+        Long pageStart = (parkinglotsRequest.getPageNo() - 1) * parkinglotsRequest.getPageSize();
+        long total = this.parkinglotsDao.count(ParkinglotConverter.INSTANCE.convertReqToParkinglot(parkinglotsRequest));
+        List<Parkinglots> parkinglotsList = this.parkinglotsDao.queryAllByAvailableSpotsRanking(pageStart, parkinglotsRequest.getPageSize());
+        pageResponse.setTotal(total);
+        pageResponse.setRecords(parkinglotsList);
+        return pageResponse;
+    }
 }
