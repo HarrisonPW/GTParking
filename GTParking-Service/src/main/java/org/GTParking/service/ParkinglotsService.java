@@ -3,6 +3,7 @@ package org.GTParking.service;
 import org.GTParking.bean.PageResponse;
 import org.GTParking.entity.po.Parkinglots;
 import org.GTParking.entity.request.ParkinglotsRequest;
+import org.GTParking.entity.request.QueryAllByAvailableSpotsRankingRequest;
 
 
 public interface ParkinglotsService {
@@ -19,6 +20,6 @@ public interface ParkinglotsService {
 
     boolean deleteById(Integer parkinglotid);
 
-    PageResponse<Parkinglots> queryAllByAvailableSpotsRanking(ParkinglotsRequest parkinglotsRequest);
+    PageResponse<Parkinglots> queryAllByAvailableSpotsRanking(QueryAllByAvailableSpotsRankingRequest parkinglotsRequest);
 
 }

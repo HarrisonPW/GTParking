@@ -14,15 +14,21 @@
     </resultMap>
 
     <select id="queryById" resultMap="ParkinglotsMap">
-        select
-parkinglotID,name,location,totalSpotsNum,currentSpotsNum,availableSpots,XCoordinate,YCoordinate
+        select parkinglotID,
+               name,
+               location,
+               totalSpotsNum,
+               currentSpotsNum,
+               availableSpots,
+               XCoordinate,
+               YCoordinate
         from ParkingLots
         where parkinglotID = #{parkinglotid}
     </select>
 
     <select id="queryAllByLimit" resultMap="ParkinglotsMap">
         select
-parkinglotID,name,location,totalSpotsNum,currentSpotsNum,availableSpots,XCoordinate,YCoordinate
+        parkinglotID,name,location,totalSpotsNum,currentSpotsNum,availableSpots,XCoordinate,YCoordinate
         from ParkingLots
         <where>
             <if test="po.parkinglotid != null">
@@ -87,15 +93,17 @@ parkinglotID,name,location,totalSpotsNum,currentSpotsNum,availableSpots,XCoordin
     </select>
 
     <insert id="insert" keyProperty="parkinglotid" useGeneratedKeys="true">
-        insert into ParkingLots(name,location,totalSpotsNum,currentSpotsNum,availableSpots,XCoordinate,YCoordinate)
-        values (#{name},#{location},#{totalspotsnum},#{currentspotsnum},#{availableSpots},#{XCoordinate},#{YCoordinate})
+        insert into ParkingLots(name, location, totalSpotsNum, currentSpotsNum, availableSpots, XCoordinate,
+                                YCoordinate)
+        values (#{name}, #{location}, #{totalspotsnum}, #{currentspotsnum}, #{availableSpots}, #{XCoordinate},
+                #{YCoordinate})
     </insert>
 
     <insert id="insertBatch" keyProperty="parkinglotid" useGeneratedKeys="true">
         insert into ParkingLots(name,location,totalSpotsNum,currentSpotsNum,availableSpots,XCoordinate,YCoordinate)
         values
         <foreach collection="entities" item="entity" separator=",">
-        (#{entity.name},#{entity.location},#{entity.totalspotsnum},#{entity.currentspotsnum},#{entities.availableSpots},#{entity.XCoordinate},#{entity.YCoordinate})
+            (#{entity.name},#{entity.location},#{entity.totalspotsnum},#{entity.currentspotsnum},#{entities.availableSpots},#{entity.XCoordinate},#{entity.YCoordinate})
         </foreach>
     </insert>
 
@@ -106,7 +114,8 @@ parkinglotID,name,location,totalSpotsNum,currentSpotsNum,availableSpots,XCoordin
             (#{entity.name},#{entity.location},#{entity.totalspotsnum},#{entity.currentspotsnum},#{entities.availableSpots},#{entity.XCoordinate},#{entity.YCoordinate})
         </foreach>
         on duplicate key update
-name = values(name)location = values(location)totalSpotsNum = values(totalSpotsNum)currentSpotsNum = values(currentSpotsNum)
+        name = values(name)location = values(location)totalSpotsNum = values(totalSpotsNum)currentSpotsNum =
+        values(currentSpotsNum)
     </insert>
 
     <update id="update">
@@ -138,12 +147,23 @@ name = values(name)location = values(location)totalSpotsNum = values(totalSpotsN
     </update>
 
     <delete id="deleteById">
-        delete from ParkingLots where parkinglotID = #{parkinglotid}
+        delete
+        from ParkingLots
+        where parkinglotID = #{parkinglotid}
     </delete>
 
     <select id="queryAllByAvailableSpotsRanking" resultMap="ParkinglotsMap">
-        select parkinglotID,name,location,totalSpotsNum,currentSpotsNum,availableSpots,XCoordinate,YCoordinate
-        from ParkingLots ORDER BY availableSpots DESC;
+        select parkinglotID,
+               name,
+               location,
+               totalSpotsNum,
+               currentSpotsNum,
+               availableSpots,
+               XCoordinate,
+               YCoordinate
+        from ParkingLots
+        ORDER BY availableSpots DESC
+        OFFSET #{pageNo} ROWS FETCH NEXT #{pageSize} ROWS ONLY;
     </select>
 
 </mapper>
