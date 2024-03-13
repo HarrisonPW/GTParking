@@ -1,0 +1,35 @@
+/* src/components/Splash.css */
+
+.splash-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh; /* Use the full height of the screen */
+    background-color: #1C2129; /* Replace with the desired background color */
+    color: #fff; /* Replace with the desired text color */
+  }
+  
+  .splash-logo {
+    width: 50vw; /* 50% of the viewport width */
+    max-width: 200px; /* Maximum width so it doesn't get too large on bigger screens */
+    height: auto; /* Maintain aspect ratio */
+  }
+  
+  .splash-title {
+    font-size: 2em;
+    /* Add additional styling as desired */
+  }
+
+  .color-different {
+    color: #80F17E; /* Replace with the color you want */
+  }
+  
+  /* media query for screens that are up to 600px wide */
+  @media (max-width: 600px) {
+    .splash-logo {
+      width: 70vw; /* Increase width percentage for smaller screens */
+      max-width: 150px; /* Optional: Adjust max-width for smaller screens */
+    }
+  }
+  

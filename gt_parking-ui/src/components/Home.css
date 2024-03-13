@@ -1,0 +1,62 @@
+/* Home.css */
+
+.home-container {
+  position: relative;
+  width: 100%;
+  /* min-height: 100vh; Minimum height to fill the screen */
+}
+  .map-view {
+    width: 100%;
+    height: 100%; /* Full height */
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1; /* Behind other content */
+  }
+
+  .overlay-container {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 2; /* Above the map */
+    padding: 10px;
+    /* Your styles for padding, etc. */
+  }
+  
+  .destination-input, .parking-lots-list {
+    padding: 10px;
+  }
+
+  .destination-input {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 20px;
+    
+  }
+  
+  .parking-lots-list {
+    display: flex;
+    flex-direction: column;
+    width: calc(100% - 20px);
+  }
+  
+  .parking-lot {
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    color: white;
+  }
+  
+  .green {
+    background-color: #4CAF50;
+  }
+  
+  .yellow {
+    background-color: #FFEB3B;
+    color: black; /* Ensures text is readable on a light background */
+  }
+  
+  .red {
+    background-color: #F44336;
+  }
+  
