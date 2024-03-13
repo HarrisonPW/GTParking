@@ -31,5 +31,7 @@ public interface ParkinglotsDao {
 
     int deleteById(Integer parkinglotid);
 
+    List<Parkinglots> queryAllByAvailableSpotsRanking(@Param("pageNo") Long pageNo, @Param("pageSize") Long pageSize);
+
 }
 

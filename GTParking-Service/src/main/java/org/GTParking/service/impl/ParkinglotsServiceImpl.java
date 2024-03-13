@@ -5,6 +5,7 @@ import org.GTParking.convert.ParkinglotConverter;
 import org.GTParking.entity.po.Parkinglots;
 import org.GTParking.dao.ParkinglotsDao;
 import org.GTParking.entity.request.ParkinglotsRequest;
+import org.GTParking.entity.request.QueryAllByAvailableSpotsRankingRequest;
 import org.GTParking.service.ParkinglotsService;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +26,7 @@ public class ParkinglotsServiceImpl implements ParkinglotsService {
 
     @Override
     public PageResponse<Parkinglots> queryByPage(ParkinglotsRequest parkinglotsRequest) {
-        Parkinglots parkinglots = ParkinglotConverter.INSTANCE.convertReqToParkinglot(parkinglotsRequest);
+        Parkinglots parkinglots = ParkinglotConverter.INSTANCE.convertParkinglotsRequestToParkinglot(parkinglotsRequest);
         PageResponse<Parkinglots> pageResponse = new PageResponse<>();
         pageResponse.setCurrent(parkinglotsRequest.getPageNo());
         pageResponse.setPageSize(parkinglotsRequest.getPageSize());
@@ -52,5 +53,20 @@ public class ParkinglotsServiceImpl implements ParkinglotsService {
     @Override
     public boolean deleteById(Integer parkinglotid) {
         return this.parkinglotsDao.deleteById(parkinglotid) > 0;
+    }
+
+    @Override
+    public PageResponse<Parkinglots> queryAllByAvailableSpotsRanking(QueryAllByAvailableSpotsRankingRequest parkinglotsRequest) {
+        Parkinglots parkinglots = ParkinglotConverter.INSTANCE.convertQueryAllByAvailableSpotsRankingRequestToParkinglot(parkinglotsRequest);
+        PageResponse<Parkinglots> pageResponse = new PageResponse<>();
+        pageResponse.setCurrent(parkinglotsRequest.getPageNo());
+        pageResponse.setPageSize(parkinglotsRequest.getPageSize());
+        Long pageStart = (parkinglotsRequest.getPageNo() - 1) * parkinglotsRequest.getPageSize();
+        long total = this.parkinglotsDao.count(parkinglots);
+        List<Parkinglots> parkinglotsList = this.parkinglotsDao.queryAllByAvailableSpotsRanking(pageStart, parkinglotsRequest.getPageSize());
+        pageResponse.setTotal(total);
+        pageResponse.setRecords(parkinglotsList);
+        return pageResponse;
+
     }
 }
