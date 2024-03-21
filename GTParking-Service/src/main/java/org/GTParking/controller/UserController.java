@@ -28,14 +28,14 @@ public class UserController {
 
 
     @PostMapping
-    public Result<User> add(User parkinglots) {
-        return Result.ok(this.userService.insertUser(parkinglots));
+    public Result<User> add(User user) {
+        return Result.ok(this.userService.insertUser(user));
     }
 
 
     @PutMapping
-    public Result<User> edit(User parkinglots) {
-        return Result.ok(this.userService.updateUser(parkinglots));
+    public Result<User> edit(User user) {
+        return Result.ok(this.userService.updateUser(user));
     }
 
 
