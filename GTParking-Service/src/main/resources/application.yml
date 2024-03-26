@@ -4,7 +4,7 @@ spring:
   datasource:
     url: jdbc:sqlserver://parkingsystem.database.windows.net:1433;databaseName=ParkingSystem
     username: puxuan
-    password: GTParkingSystem!
+    password: xxxxx
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
   redis:
     host: 127.0.0.1
