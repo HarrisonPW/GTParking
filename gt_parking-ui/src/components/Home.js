@@ -3,6 +3,7 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css'; // Import Leaflet styles
 import './Home.css';
 import L from 'leaflet';
+import getAllParkingLots from "../api/getDatabase";
 
 delete L.Icon.Default.prototype._getIconUrl;
 
@@ -19,14 +20,22 @@ const Home = () => {
   // This would be fetched from an API
   useEffect(() => {
     // Placeholder data
-    const fetchedParkingLots = [
-      { id: 1, name: 'E52 Peters Parking Deck', occupancy: 8, coordinates: [33.775292682929816, -84.39363979653825] },
-      { id: 2, name: 'E40 Klaus Deck', occupancy: 52, coordinates: [33.78013695843671, -84.39842422570989] },
-      { id: 3, name: 'ER66 10th & Home', occupancy: 78, coordinates: [33.78190123308837, -84.39493615910393] },
-      { id: 4, name: 'Visitor\'s Parking 2', occupancy: 43, coordinates: [33.77388599065813, -84.39957233391993] },
-      // ...other parking lots
-    ];
-    setParkingLots(fetchedParkingLots);
+    // const fetchedParkingLots = [
+    //   { id: 1, name: 'E52 Peters Parking Deck', occupancy: 8, coordinates: [33.775292682929816, -84.39363979653825] },
+    //   { id: 2, name: 'E40 Klaus Deck', occupancy: 52, coordinates: [33.78013695843671, -84.39842422570989] },
+    //   { id: 3, name: 'ER66 10th & Home', occupancy: 78, coordinates: [33.78190123308837, -84.39493615910393] },
+    //   { id: 4, name: 'Visitor\'s Parking 2', occupancy: 43, coordinates: [33.77388599065813, -84.39957233391993] },
+    //   // ...other parking lots
+    // ];
+      const fetchParkingLots = async () => {
+      try {
+        const fetchedParkingLots = await getAllParkingLots();
+        setParkingLots(fetchedParkingLots);
+      } catch (error) {
+        console.error('Failed to fetch parking lots:', error);
+      }
+    };
+      fetchParkingLots();
   }, []);
 
   const getOccupancyColor = (occupancy) => {

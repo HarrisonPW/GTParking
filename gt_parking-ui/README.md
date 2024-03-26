@@ -1,9 +1,10 @@
 # Dependencies to install:
 ## Run these commands:
 
-npm install leaflet@latest react-leaflet@latest
-npm install react-router-dom
-npm start (to start the ap)
+npm install leaflet@latest react-leaflet@latest \
+npm install react-router-dom \
+npm install fetch \
+npm start (to start the ap) 
 
 
 # Getting Started with Create React App
