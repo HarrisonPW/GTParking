@@ -65,4 +65,16 @@
             <version>1.4.2.Final</version>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>org.GTParking.App</mainClass>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

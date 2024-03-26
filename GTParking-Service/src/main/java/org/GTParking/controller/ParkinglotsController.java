@@ -1,6 +1,5 @@
 package org.GTParking.controller;
 
-import jdk.nashorn.internal.runtime.logging.Logger;
 import org.GTParking.bean.PageResponse;
 import org.GTParking.bean.Result;
 import org.GTParking.entity.po.Parkinglots;
