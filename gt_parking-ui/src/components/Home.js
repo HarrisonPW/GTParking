@@ -55,6 +55,7 @@ const Home = () => {
         />
         <MapContainer center={[33.775237150193355, -84.3936369094809]} zoom={13} className="map-view">
             <TileLayer
+                // url = "https://tile.openstreetmap.org/{z}/{x}/{y}.png"
                 url="https://api.mapbox.com/styles/v1/jodi2023/cltpmm7k600et01p5e95pbodv/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1Ijoiam9kaTIwMjMiLCJhIjoiY2x0cGlnMHN5MHJteTJrbmlvaWh0a2MxdyJ9.M_ptTEE9hDlCk8g8_73j4g"
                 // url="https://api.mapbox.com/styles/v1/mapbox/streets-v12/tiles/{tilesize}/{z}/{x}/{y}{@2x}?access_token=pk.eyJ1Ijoiam9kaTIwMjMiLCJhIjoiY2x0cGtqNHhxMHN1cjJxdDBlMHY5MHAxdyJ9.SVebeO8ZkGbYwkYswcPHcA"
                 // attribution="Map data &copy; OpenStreetMap contributors, Imagery © Mapbox"

@@ -19,12 +19,12 @@
     top: 0;
     width: 100%;
     z-index: 2; /* Above the map */
-    padding: 10px;
+    /* padding: 10px; */
     /* Your styles for padding, etc. */
   }
   
   .destination-input, .parking-lots-list {
-    padding: 10px;
+   padding: 10px;
   }
 
   .destination-input {
