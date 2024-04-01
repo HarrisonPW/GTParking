@@ -2,9 +2,9 @@ spring:
   application:
     name: GT-Parking
   datasource:
-    url: jdbc:sqlserver://parkingsystem.database.windows.net:1433;databaseName=ParkingSystem
-    username: puxuan
-    password: xxxxxxxxxxx
+    url: jdbc:sqlserver://parkingsystem.c5s8024yq9iy.us-east-1.rds.amazonaws.com:1433;databaseName=ParkingSystem
+    username: admin
+    password: xxxxxxxxx
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
   redis:
     host: 127.0.0.1
