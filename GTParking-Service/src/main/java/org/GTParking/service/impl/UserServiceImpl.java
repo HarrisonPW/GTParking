@@ -1,6 +1,7 @@
 package org.GTParking.service.impl;
 
 import org.GTParking.dao.ParkinglotsDao;
+import org.GTParking.entity.po.Parkinglots;
 import org.springframework.stereotype.Service;
 import org.GTParking.bean.PageResponse;
 import org.GTParking.entity.po.User;
@@ -27,7 +28,17 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public PageResponse<User> queryUserByPage(UserRequest userRequest){
-
+        User user = new User();
+        BeanUtils.copyProperties(userRequest, user);
+        PageResponse<User> pageResponse = new PageResponse<>();
+        pageResponse.setCurrent(userRequest.getPageNo());
+        pageResponse.setPageSize(userRequest.getPageSize());
+        Long pageStart = (userRequest.getPageNo() - 1) * userRequest.getPageSize();
+        long total = this.userDao.count(user);
+        List<User> userList = this.userDao.queryAllByLimit(user, pageStart, userRequest.getPageSize());
+        pageResponse.setTotal(total);
+        pageResponse.setRecords(userList);
+        return pageResponse;
     }
 
     @Override
