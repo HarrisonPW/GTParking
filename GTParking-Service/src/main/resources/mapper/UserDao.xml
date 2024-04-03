@@ -12,103 +12,103 @@
 
     <select id="queryById" resultMap="UserMap">
         select
-        parkinglotID,name,location,totalSpotsNum,currentSpotsNum
-        from ParkingLots
-        where parkinglotID = #{parkinglotid}
+        userID,username,permits,isCheckedIn,isDriving
+        from User
+        where userID = #{userID}
     </select>
 
     <select id="queryAllByLimit" resultMap="UserMap">
         select
-        parkinglotID,name,location,totalSpotsNum,currentSpotsNum
-        from ParkingLots
+        userID,username,permits,isCheckedIn,isDriving
+        from User
         <where>
-            <if test="po.parkinglotid != null">
-                and parkinglotID = #{po.parkinglotid}
+            <if test="po.userID != null">
+                and userID = #{po.userID}
             </if>
-            <if test="po.name != null and po.name != ''">
-                and name = #{po.name}
+            <if test="po.username != null and po.username != ''">
+                and username = #{po.username}
             </if>
-            <if test="po.location != null and po.location != ''">
-                and location = #{po.location}
+            <if test="po.permits != null">
+                and permits = #{po.permits}
             </if>
-            <if test="po.totalspotsnum != null">
-                and totalSpotsNum = #{po.totalspotsnum}
+            <if test="po.isCheckedIn != null">
+                and isCheckedIn = #{po.isCheckedIn}
             </if>
-            <if test="po.currentspotsnum != null">
-                and currentSpotsNum = #{po.currentspotsnum}
+            <if test="po.isDriving != null">
+                and isDriving = #{po.isDriving}
             </if>
         </where>
-        ORDER BY parkinglotID
+        ORDER BY userID
         OFFSET #{pageNo} ROWS
         FETCH NEXT #{pageSize} ROWS ONLY
     </select>
 
     <select id="count" resultType="java.lang.Long">
         select count(1)
-        from ParkingLots
+        from User
         <where>
-            <if test="parkinglotid != null">
-                and parkinglotID = #{parkinglotid}
+            <if test="userID != null">
+                and userID = #{userID}
             </if>
-            <if test="name != null and name != ''">
-                and name = #{name}
+            <if test="username != null and username != ''">
+                and username = #{username}
             </if>
-            <if test="location != null and location != ''">
-                and location = #{location}
+            <if test="permits != null">
+                and permits = #{permits}
             </if>
-            <if test="totalspotsnum != null">
-                and totalSpotsNum = #{totalspotsnum}
+            <if test="isCheckedIn != null">
+                and isCheckedIn = #{isCheckedIn}
             </if>
-            <if test="currentspotsnum != null">
-                and currentSpotsNum = #{currentspotsnum}
+            <if test="isDriving != null">
+                and isDriving = #{isDriving}
             </if>
         </where>
     </select>
 
-    <insert id="insert" keyProperty="parkinglotid" useGeneratedKeys="true">
-        insert into ParkingLots(name,location,totalSpotsNum,currentSpotsNum)
-        values (#{name},#{location},#{totalspotsnum},#{currentspotsnum})
+    <insert id="insert" keyProperty="userID" useGeneratedKeys="true">
+        insert into User(username,permits,isCheckedIn,isDriving)
+        values (#{username},#{permits},#{isCheckedIn},#{isDriving})
     </insert>
 
-    <insert id="insertBatch" keyProperty="parkinglotid" useGeneratedKeys="true">
-        insert into ParkingLots(name,location,totalSpotsNum,currentSpotsNum)
+    <insert id="insertBatch" keyProperty="userID" useGeneratedKeys="true">
+        insert into User(username,permits,isCheckedIn,isDriving)
         values
         <foreach collection="entities" item="entity" separator=",">
-            (#{entity.name},#{entity.location},#{entity.totalspotsnum},#{entity.currentspotsnum})
+            (#{entity.username},#{entity.permits},#{entity.isCheckedIn},#{entity.isDriving})
         </foreach>
     </insert>
 
-    <insert id="insertOrUpdateBatch" keyProperty="parkinglotid" useGeneratedKeys="true">
-        insert into ParkingLots(name,location,totalSpotsNum,currentSpotsNum)
+    <insert id="insertOrUpdateBatch" keyProperty="userID" useGeneratedKeys="true">
+        insert into User(username,permits,isCheckedIn,isDriving)
         values
         <foreach collection="entities" item="entity" separator=",">
-            (#{entity.name},#{entity.location},#{entity.totalspotsnum},#{entity.currentspotsnum})
+            (#{entity.username},#{entity.permits},#{entity.isCheckedIn},#{entity.isDriving})
         </foreach>
         on duplicate key update
-        name = values(name)location = values(location)totalSpotsNum = values(totalSpotsNum)currentSpotsNum = values(currentSpotsNum)
+        username = values(username)permits = values(permits)isCheckedIn = values(isCheckedIn)isDriving = values(isDriving)
     </insert>
 
     <update id="update">
-        update ParkingLots
+        update User
         <set>
-            <if test="name != null and name != ''">
-                name = #{name},
+            <if test="username != null and username != ''">
+                username = #{username},
             </if>
-            <if test="location != null and location != ''">
-                location = #{location},
+            <if test="permits != null">
+                permits = #{permits},
             </if>
-            <if test="totalspotsnum != null">
-                totalSpotsNum = #{totalspotsnum},
+            <if test="isCheckedIn != null">
+                isCheckedIn = #{isCheckedIn},
             </if>
-            <if test="currentspotsnum != null">
-                currentSpotsNum = #{currentspotsnum},
+            <if test="isDriving != null">
+                isDriving = #{isDriving},
             </if>
         </set>
-        where parkinglotID = #{parkinglotid}
+        where userID = #{userID}
     </update>
 
     <delete id="deleteById">
-        delete from ParkingLots where parkinglotID = #{parkinglotid}
+        delete from User where userID = #{userID}
     </delete>
 
 </mapper>
