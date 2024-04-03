@@ -21,8 +21,8 @@ public class UserServiceImpl implements UserService{
     private UserDao userDao;
 
     @Override
-    public User queryUserVById(Integer userid){
-
+    public User queryUserVById(Integer userid) {
+        return this.userDao.queryById(userid);
     }
 
     @Override
@@ -32,17 +32,19 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public User insertUser(User user){
-
+        this.userDao.insert(user);
+        return user;
     }
 
     @Override
     public User updateUser(User user){
-
+        this.userDao.update(user);
+        return this.queryUserVById(user.getUserid());
     }
 
     @Override
     public boolean deleteById(Integer userid){
-
+        return this.userDao.deleteById(userid) > 0;
     }
 
     @Override
