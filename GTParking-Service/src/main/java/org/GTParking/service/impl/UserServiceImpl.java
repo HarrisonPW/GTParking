@@ -59,7 +59,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public boolean deleteById(Integer userid){
+    public boolean deleteUserById(Integer userid){
         return this.userDao.deleteById(userid) > 0;
     }
 

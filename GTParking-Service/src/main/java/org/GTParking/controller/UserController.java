@@ -42,10 +42,10 @@ public class UserController {
 
     @DeleteMapping
     public Result<Boolean> deleteById(Integer id) {
-        return Result.ok(this.userService.deleteById(id));
+        return Result.ok(this.userService.deleteUserById(id));
     }
 
-    public Result<Boolean> updateLocation(Integer userid, Date timestamp, Double latitude, Double longitude) {
+    public Result<Boolean> updateLocation(User userid, Date timestamp, Double latitude, Double longitude) {
         return Result.ok(this.userService.updateLocation(userid, timestamp, latitude, longitude));
     }
 
