@@ -7,6 +7,8 @@ import java.io.Serializable;
 @Data
 public class Result<T> implements Serializable {
 
+    private static final long serialVersionUID = -7242545701638842669L;
+
     private Result() {
     }
 
