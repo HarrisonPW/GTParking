@@ -15,5 +15,5 @@ public interface UserService {
 
     boolean deleteUserById(Integer userid);
 
-//    boolean updateLocation(Integer userid, Date timestamp, Double latitude, Double longitude);
+    User updateLocation(User user, Date timestamp, Double latitude, Double longitude);
 }

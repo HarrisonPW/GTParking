@@ -16,7 +16,7 @@ public class User implements Serializable {
 
     private ArrayList<String> permits;
 
-    private Queue<LocationTime> path;
+    private ArrayList<LocationTime> path;
 
 //    True is checked in
 //    False is checked out
