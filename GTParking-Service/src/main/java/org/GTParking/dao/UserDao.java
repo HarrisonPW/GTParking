@@ -2,6 +2,7 @@ package org.GTParking.dao;
 
 import org.GTParking.entity.po.User;
 import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 
 public interface UserDao {
@@ -28,3 +29,4 @@ public interface UserDao {
 
     int deleteById(Integer userid);
 }
+

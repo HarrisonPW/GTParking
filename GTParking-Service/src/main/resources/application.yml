@@ -2,9 +2,9 @@ spring:
   application:
     name: GT-Parking
   datasource:
-    url: jdbc:sqlserver://parkingsystem.database.windows.net:1433;databaseName=ParkingSystem
-    username: puxuan
-    password: xxxxxxxx
+    url: jdbc:sqlserver://parkingsystem.c5s8024yq9iy.us-east-1.rds.amazonaws.com:1433;databaseName=ParkingSystem
+    username: admin
+    password: xxxxxxxxxx
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
   redis:
     host: 127.0.0.1
@@ -12,6 +12,9 @@ spring:
     password: 123456
 server:
   # edit the port of the application here
-  port: 8082
-
-
+  port: 443
+  ssl:
+    key-store: classpath:keystore.p12
+    key-store-password: 20010304
+    key-store-type: PKCS12
+    key-alias: parkingsystem

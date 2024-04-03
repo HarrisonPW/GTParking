@@ -4,6 +4,7 @@ import org.GTParking.bean.PageResponse;
 import org.GTParking.bean.Result;
 import org.GTParking.entity.po.Parkinglots;
 import org.GTParking.entity.request.ParkinglotsRequest;
+import org.GTParking.entity.request.QueryAllByAvailableSpotsRankingRequest;
 import org.GTParking.service.ParkinglotsService;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +22,11 @@ public class ParkinglotsController {
     @GetMapping
     public Result<PageResponse<Parkinglots>> queryByPage(ParkinglotsRequest parkinglotsRequest) {
         return Result.ok(this.parkinglotsService.queryByPage(parkinglotsRequest));
+    }
+
+    @GetMapping("availableSpotsRanking")
+    public Result<PageResponse<Parkinglots>> queryAllByAvailableSpotsRanking(QueryAllByAvailableSpotsRankingRequest queryAllByAvailableSpotsRankingRequest) {
+        return Result.ok(this.parkinglotsService.queryAllByAvailableSpotsRanking(queryAllByAvailableSpotsRankingRequest));
     }
 
 
