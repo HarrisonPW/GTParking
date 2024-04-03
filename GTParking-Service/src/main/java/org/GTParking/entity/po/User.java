@@ -4,6 +4,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Queue;
 
 @Data
 public class User implements Serializable {
@@ -14,6 +15,8 @@ public class User implements Serializable {
     private String username;
 
     private ArrayList<String> permits;
+
+    private Queue<LocationTime> path;
 
 //    True is checked in
 //    False is checked out

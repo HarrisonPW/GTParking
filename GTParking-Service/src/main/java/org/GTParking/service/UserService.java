@@ -9,13 +9,11 @@ import java.util.Date;
 public interface UserService {
     User queryUserVById(Integer userid);
 
-    PageResponse<User> queryUserByPage(UserRequest userRequest);
-
     User insertUser(User user);
 
     User updateUser(User user);
 
-    boolean deleteById(Integer userid);
+    boolean deleteUserById(Integer userid);
 
-    boolean updateLocation(Integer userid, Date timestamp, Double latitude, Double longitude);
+//    boolean updateLocation(Integer userid, Date timestamp, Double latitude, Double longitude);
 }
