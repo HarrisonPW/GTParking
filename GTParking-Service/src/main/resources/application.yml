@@ -4,7 +4,7 @@ spring:
   datasource:
     url: jdbc:sqlserver://parkingsystem.c5s8024yq9iy.us-east-1.rds.amazonaws.com:1433;databaseName=ParkingSystem
     username: admin
-    password: xxxxxxxxxx
+    password: xxxxxxxxx
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
   redis:
     host: 127.0.0.1
@@ -12,9 +12,9 @@ spring:
     password: 123456
 server:
   # edit the port of the application here
-  port: 443
+  port: 8443
   ssl:
-    key-store: classpath:keystore.p12
+    key-store: classpath:SSL/dev.localhost.com.p12
     key-store-password: 20010304
     key-store-type: PKCS12
-    key-alias: parkingsystem
+    key-password: 20010304
