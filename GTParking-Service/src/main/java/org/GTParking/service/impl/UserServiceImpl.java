@@ -2,8 +2,6 @@ package org.GTParking.service.impl;
 
 
 import org.GTParking.bean.PageResponse;
-import org.GTParking.convert.ParkinglotConverter;
-import org.GTParking.dao.ParkinglotsDao;
 import org.GTParking.dao.UserDao;
 import org.GTParking.entity.po.LocationTime;
 import org.GTParking.entity.po.Parkinglots;
@@ -14,6 +12,7 @@ import org.GTParking.entity.po.User;
 import org.GTParking.entity.request.ParkinglotsRequest;
 import org.GTParking.dao.UserDao;
 import org.GTParking.entity.request.UserRequest;
+import org.GTParking.service.ParkinglotsService;
 import org.GTParking.service.UserService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -30,7 +29,9 @@ public class UserServiceImpl implements UserService{
     @Resource
     private UserDao userDao;
     @Resource
-    private ParkinglotsDao parkinglotsDao;
+    private ParkinglotsService parkinglotsService;
+    @Resource
+    private UserService userService;
 
 
     @Override
@@ -72,7 +73,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User updateLocation(User user, Date timestamp, Double latitude, Double longitude) {
+    public boolean updateLocation(User user, Date timestamp, Double latitude, Double longitude) {
         ArrayList<LocationTime> path = user.getPath();
         LocationTime currLT = new LocationTime(longitude, latitude, timestamp);
         path.add(currLT);
@@ -80,15 +81,15 @@ public class UserServiceImpl implements UserService{
         while (!path.isEmpty() && path.get(0).getTimestamp().before(new Date(timestamp.getTime() - 600000))) {
             path.remove(0);
         }
-        updateDrivingStatus(user);
-        return user;
+
+        return updateDrivingStatus(user);
     }
 
-    private void updateDrivingStatus(User user) {
+    private boolean updateDrivingStatus(User user) {
         ArrayList<LocationTime> path = user.getPath();
         Double speedThreshold = 3.0;
         if (path.size() <= 1) {
-            return;
+            return false;
         }
 
 //        in meters
@@ -107,22 +108,21 @@ public class UserServiceImpl implements UserService{
         boolean isDriving = (totalDistance / totalInterval) > speedThreshold;
         boolean prevIsDriving = user.isDriving();
         user.setDriving(isDriving);
-        //    TODO: update user database with the latest isDriving status.
-
-        updateCheckedin(user, isDriving, prevIsDriving, new ParkinglotsRequest());
+        userService.updateUser(user);
+        return updateCheckedin(user, isDriving, prevIsDriving, new ParkinglotsRequest());
     }
 
 //    TODO: edge case: user passes by both Parking Lot 1 and Parking Lot 2 within the window, cannot determine which parked at.
-    private void updateCheckedin(User user, boolean isDriving, boolean prevIsDriving, ParkinglotsRequest parkinglotsRequest) {
+    private boolean updateCheckedin(User user, boolean isDriving, boolean prevIsDriving, ParkinglotsRequest parkinglotsRequest) {
         if (isDriving && prevIsDriving) {
-            return;
+            return false;
         }
         if (!isDriving && !prevIsDriving) {
-            return;
+            return false;
         }
 
         Double parkinglotsRadius = 150.0;
-        PageResponse<Parkinglots> parkinglotsPageResponse = queryParkinglotsByPage(parkinglotsRequest);
+        PageResponse<Parkinglots> parkinglotsPageResponse = parkinglotsService.queryByPage(parkinglotsRequest);
         List<Parkinglots> parkinglots = parkinglotsPageResponse.getResult();
         ArrayList<LocationTime> path = user.getPath();
 
@@ -134,11 +134,19 @@ public class UserServiceImpl implements UserService{
                 Double userLon = path.get(j).getLongitude();
                 if (calculateDistance(parkinglotsLat, parkinglotsLon, userLat, userLon) <= parkinglotsRadius) {
                     user.setCheckedIn(!user.isCheckedIn());
-                    //    TODO: update user database with the latest checkedin status.
-                    return;
+                    int currSpots = parkinglots.get(i).getAvailableSpots();
+                    if (!user.isCheckedIn()) {
+                        parkinglots.get(i).setAvailableSpots(currSpots + 1);
+                    } else {
+                        parkinglots.get(i).setAvailableSpots(currSpots - 1);
+                    }
+                    parkinglotsService.update(parkinglots.get(i));
+                    userService.updateUser(user);
+                    return true;
                 }
             }
         }
+        return false;
     }
 
     private double calculateDistance(Double lat1, Double lon1, Double lat2, Double lon2) {
@@ -159,16 +167,4 @@ public class UserServiceImpl implements UserService{
         return RADIUS_OF_EARTH * c;
     }
 
-    private PageResponse<Parkinglots> queryParkinglotsByPage(ParkinglotsRequest parkinglotsRequest) {
-        Parkinglots parkinglots = ParkinglotConverter.INSTANCE.convertParkinglotsRequestToParkinglot(parkinglotsRequest);
-        PageResponse<Parkinglots> pageResponse = new PageResponse<>();
-        pageResponse.setCurrent(parkinglotsRequest.getPageNo());
-        pageResponse.setPageSize(parkinglotsRequest.getPageSize());
-        Long pageStart = (parkinglotsRequest.getPageNo() - 1) * parkinglotsRequest.getPageSize();
-        long total = this.parkinglotsDao.count(parkinglots);
-        List<Parkinglots> parkinglotsList = this.parkinglotsDao.queryAllByLimit(parkinglots, pageStart, parkinglotsRequest.getPageSize());
-        pageResponse.setTotal(total);
-        pageResponse.setRecords(parkinglotsList);
-        return pageResponse;
-    }
 }

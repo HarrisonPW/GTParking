@@ -17,5 +17,6 @@ public interface UserService {
 
     boolean deleteUserById(Integer userid);
 
-    User updateLocation(User user, Date timestamp, Double latitude, Double longitude);
+//    True if there's an update to the checked in value, False if not.
+    boolean updateLocation(User user, Date timestamp, Double latitude, Double longitude);
 }
