@@ -1,6 +1,5 @@
-FROM openjdk:8
+FROM openjdk:11-jdk-slim
 VOLUME /tmp
-EXPOSE 8082
 ARG JAR_FILE=target/GTParking-Service-1.0-SNAPSHOT.jar
-ADD ${JAR_FILE} app.jar
-ENTRYPOINT ["java","-r","/app.jar"]
+COPY ${JAR_FILE} app.jar
+ENTRYPOINT ["java","-jar","/app.jar"]
