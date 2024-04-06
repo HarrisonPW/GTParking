@@ -20,7 +20,6 @@
     width: 100%;
     z-index: 2; /* Above the map */
     /* padding: 10px; */
-    /* Your styles for padding, etc. */
   }
   
   .destination-input, .parking-lots-list {
@@ -34,29 +33,29 @@
     
   }
   
-  .parking-lots-list {
-    display: flex;
-    flex-direction: column;
-    width: calc(100% - 20px);
-  }
+  /*.parking-lots-list {*/
+  /*  display: flex;*/
+  /*  flex-direction: column;*/
+  /*  width: calc(100% - 20px);*/
+  /*}*/
   
-  .parking-lot {
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 5px;
-    color: white;
-  }
+  /*.parking-lot {*/
+  /*  padding: 10px;*/
+  /*  margin-bottom: 10px;*/
+  /*  border-radius: 5px;*/
+  /*  color: white;*/
+  /*}*/
   
-  .green {
-    background-color: #4CAF50;
-  }
+  /*.green {*/
+  /*  background-color: #4CAF50;*/
+  /*}*/
   
-  .yellow {
-    background-color: #FFEB3B;
-    color: black; /* Ensures text is readable on a light background */
-  }
+  /*.yellow {*/
+  /*  background-color: #FFEB3B;*/
+  /*  color: black; !* Ensures text is readable on a light background *!*/
+  /*}*/
   
-  .red {
-    background-color: #F44336;
-  }
+  /*.red {*/
+  /*  background-color: #F44336;*/
+  /*}*/
   
