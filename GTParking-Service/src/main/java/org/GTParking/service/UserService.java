@@ -9,6 +9,8 @@ import java.util.Date;
 public interface UserService {
     User queryUserVById(String userid);
 
+    PageResponse<User> queryUserByPage(UserRequest userRequest);
+
     User insertUser(User user);
 
     User updateUser(User user);

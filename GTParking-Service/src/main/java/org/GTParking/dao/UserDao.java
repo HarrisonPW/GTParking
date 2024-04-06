@@ -8,7 +8,21 @@ import java.util.List;
 public interface UserDao {
     User queryById(String userid);
 
+
+    List<User> queryAllByLimit(@Param("po")User sysUser, @Param("pageNo") Long pageNo, @Param("pageSize") Long pageSize);
+
+
+    long count(User user);
+
+
     int insert(User user);
+
+
+    int insertBatch(@Param("entities") List<User> entities);
+
+
+    int insertOrUpdateBatch(@Param("entities") List<User> entities);
+
 
     int update(User user);
 
