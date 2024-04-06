@@ -23,7 +23,7 @@ public class UserController {
 
 
     @GetMapping("{id}")
-    public Result<User> queryById(@PathVariable("id") Integer id) {
+    public Result<User> queryById(@PathVariable("id") String id) {
         return Result.ok(this.userService.queryUserVById(id));
     }
 
@@ -41,7 +41,7 @@ public class UserController {
 
 
     @DeleteMapping
-    public Result<Boolean> deleteById(Integer id) {
+    public Result<Boolean> deleteById(String id) {
         return Result.ok(this.userService.deleteUserById(id));
     }
 
