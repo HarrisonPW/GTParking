@@ -17,6 +17,9 @@ In the project directory, you can run:
 
 ### `npm start`
 
+To run using https (required for geolocation API), use
+### `set HTTPS=true&&npm start`
+
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 

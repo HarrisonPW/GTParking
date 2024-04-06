@@ -1,6 +1,7 @@
 async function getAllParkingLots() {
-    const get_all_parking_lot_url = 'http://localhost:8082/parkinglots/availableSpotsRanking';
+    const get_all_parking_lot_url = 'http://localhost:8080/parkinglots/availableSpotsRanking';
     try {
+        // const response = await fetch(get_all_parking_lot_url);
         const response = await fetch(get_all_parking_lot_url);
         const data = await response.json();
 

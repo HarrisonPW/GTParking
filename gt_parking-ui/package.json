@@ -9,6 +9,7 @@
     "cors": "^2.8.5",
     "fetch": "^1.1.0",
     "leaflet": "^1.9.4",
+    "node-fetch": "^3.3.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-leaflet": "^4.2.1",
@@ -29,8 +30,11 @@
     ]
   },
   "browserslist": [
-  ">0.2%",
-  "not dead",
-  "not op_mini all"
-  ]
+    ">0.2%",
+    "not dead",
+    "not op_mini all"
+  ],
+  "devDependencies": {
+    "axios": "^1.6.8"
+  }
 }
