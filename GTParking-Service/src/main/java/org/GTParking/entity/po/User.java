@@ -20,9 +20,9 @@ public class User implements Serializable {
 
 //    True is checked in
 //    False is checked out
-    private boolean isCheckedIn;
+    private Boolean isCheckedIn;
 
 //    True is driving
 //    False is walking or other
-    private boolean isDriving;
+    private Boolean isDriving;
 }

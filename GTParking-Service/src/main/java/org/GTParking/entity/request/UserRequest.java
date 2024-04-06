@@ -16,7 +16,7 @@ public class UserRequest extends PageRequest implements Serializable {
 
     private ArrayList<String> permits;
 
-    private boolean isCheckedIn;
+    private Boolean isCheckedIn;
 
-    private boolean isDriving;
+    private Boolean isDriving;
 }

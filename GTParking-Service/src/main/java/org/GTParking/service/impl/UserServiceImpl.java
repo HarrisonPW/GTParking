@@ -68,12 +68,12 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public boolean deleteUserById(String userid) {
+    public Boolean deleteUserById(String userid) {
         return this.userDao.deleteById(userid) > 0;
     }
 
     @Override
-    public boolean updateLocation(User user, Date timestamp, Double latitude, Double longitude) {
+    public Boolean updateLocation(User user, Date timestamp, Double latitude, Double longitude) {
         ArrayList<LocationTime> path = user.getPath();
         LocationTime currLT = new LocationTime(longitude, latitude, timestamp);
         path.add(currLT);
@@ -85,7 +85,7 @@ public class UserServiceImpl implements UserService{
         return updateDrivingStatus(user);
     }
 
-    private boolean updateDrivingStatus(User user) {
+    private Boolean updateDrivingStatus(User user) {
         ArrayList<LocationTime> path = user.getPath();
         Double speedThreshold = 3.0;
         if (path.size() <= 1) {
@@ -105,15 +105,15 @@ public class UserServiceImpl implements UserService{
             totalDistance += calculateDistance(lat1, lon1, lat2, lon2);
         }
 
-        boolean isDriving = (totalDistance / totalInterval) > speedThreshold;
-        boolean prevIsDriving = user.isDriving();
-        user.setDriving(isDriving);
+        Boolean isDriving = (totalDistance / totalInterval) > speedThreshold;
+        Boolean prevIsDriving = user.getIsDriving();
+        user.setIsDriving(!user.getIsDriving());
         userService.updateUser(user);
         return updateCheckedin(user, isDriving, prevIsDriving, new ParkinglotsRequest());
     }
 
 //    TODO: edge case: user passes by both Parking Lot 1 and Parking Lot 2 within the window, cannot determine which parked at.
-    private boolean updateCheckedin(User user, boolean isDriving, boolean prevIsDriving, ParkinglotsRequest parkinglotsRequest) {
+    private Boolean updateCheckedin(User user, Boolean isDriving, Boolean prevIsDriving, ParkinglotsRequest parkinglotsRequest) {
         if (isDriving && prevIsDriving) {
             return false;
         }
@@ -133,9 +133,9 @@ public class UserServiceImpl implements UserService{
                 Double userLat = path.get(j).getLatitude();
                 Double userLon = path.get(j).getLongitude();
                 if (calculateDistance(parkinglotsLat, parkinglotsLon, userLat, userLon) <= parkinglotsRadius) {
-                    user.setCheckedIn(!user.isCheckedIn());
+                    user.setIsCheckedIn(!user.getIsCheckedIn());
                     int currSpots = parkinglots.get(i).getAvailableSpots();
-                    if (!user.isCheckedIn()) {
+                    if (!user.getIsCheckedIn()) {
                         parkinglots.get(i).setAvailableSpots(currSpots + 1);
                     } else {
                         parkinglots.get(i).setAvailableSpots(currSpots - 1);

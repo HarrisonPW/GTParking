@@ -15,8 +15,8 @@ public interface UserService {
 
     User updateUser(User user);
 
-    boolean deleteUserById(String userid);
+    Boolean deleteUserById(String userid);
 
 //    True if there's an update to the checked in value, False if not.
-    boolean updateLocation(User user, Date timestamp, Double latitude, Double longitude);
+    Boolean updateLocation(User user, Date timestamp, Double latitude, Double longitude);
 }
