@@ -3,7 +3,7 @@
 <mapper namespace="org.GTParking.dao.UserDao">
 
     <resultMap type="org.GTParking.entity.po.User" id="UserMap">
-        <result property="userid" column="userID" jdbcType="INTEGER"/>
+        <result property="userid" column="userID" jdbcType="VARCHAR"/>
         <result property="username" column="username" jdbcType="VARCHAR"/>
         <result property="permits" column="permits" jdbcType="ARRAY"/>
         <result property="isCheckedIn" column="isCheckedIn" jdbcType="BOOLEAN"/>
@@ -22,7 +22,7 @@
         userID,username,permits,isCheckedIn,isDriving
         from User
         <where>
-            <if test="po.userID != null">
+            <if test="po.userID != null and po.userID != ''">
                 and userID = #{po.userID}
             </if>
             <if test="po.username != null and po.username != ''">
@@ -47,7 +47,7 @@
         select count(1)
         from User
         <where>
-            <if test="userID != null">
+            <if test="userID != null and po.userID != ''">
                 and userID = #{userID}
             </if>
             <if test="username != null and username != ''">
