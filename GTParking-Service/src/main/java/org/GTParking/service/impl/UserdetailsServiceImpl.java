@@ -7,6 +7,7 @@ import org.GTParking.entity.po.Userdetails;
 import org.GTParking.entity.request.UserdetailsRequest;
 import org.GTParking.service.UserdetailsService;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -27,7 +28,8 @@ public class UserdetailsServiceImpl implements UserdetailsService {
 
     @Override
     public PageResponse<Userdetails> queryByPage(UserdetailsRequest userdetailsRequest) {
-        Userdetails userdetails = UserdetailsConverter.INSTANCE.convertUserdetailsRequestToUserdetails(userdetailsRequest);
+        Userdetails userdetails = new Userdetails();
+        BeanUtils.copyProperties(userdetailsRequest, userdetails);
         PageResponse<Userdetails> pageResponse = new PageResponse<>();
         pageResponse.setCurrent(userdetailsRequest.getPageNo());
         pageResponse.setPageSize(userdetailsRequest.getPageSize());

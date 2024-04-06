@@ -24,22 +24,22 @@
         from UserDetails
         <where>
             <if test="po.userid != null and po.userid != ''">
-                and userid = #{userid}
+                and userid = #{po.userid}
             </if>
             <if test="po.username != null and po.username != ''">
-                and username = #{username}
+                and username = #{po.username}
             </if>
             <if test="po.permits != null and po.permits != ''">
-                and permits = #{permits}
+                and permits = #{po.permits}
             </if>
             <if test="po.path != null and po.path != ''">
-                and path = #{path}
+                and path = #{po.path}
             </if>
             <if test="po.ischeckedin != null">
-                and isCheckedIn = #{ischeckedin}
+                and isCheckedIn = #{po.ischeckedin}
             </if>
             <if test="po.isdriving != null">
-                and isDriving = #{isdriving}
+                and isDriving = #{po.isdriving}
             </if>
         </where>
         ORDER BY userid
