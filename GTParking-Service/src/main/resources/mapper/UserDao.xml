@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.GTParking.dao.UserDao">
+
+    <resultMap type="org.GTParking.entity.po.User" id="UserMap">
+        <result property="userid" column="userID" jdbcType="INTEGER"/>
+        <result property="username" column="username" jdbcType="VARCHAR"/>
+        <result property="permits" column="permits" jdbcType="ARRAY"/>
+        <result property="isCheckedIn" column="isCheckedIn" jdbcType="BOOLEAN"/>
+        <result property="isDriving" column="isDriving" jdbcType="BOOLEAN"/>
+    </resultMap>
+
+    <select id="queryById" resultMap="UserMap">
+        select
+        userID,username,permits,isCheckedIn,isDriving
+        from User
+        where userID = #{userID}
+    </select>
+
+    <select id="queryAllByLimit" resultMap="UserMap">
+        select
+        userID,username,permits,isCheckedIn,isDriving
+        from User
+        <where>
+            <if test="po.userID != null">
+                and userID = #{po.userID}
+            </if>
+            <if test="po.username != null and po.username != ''">
+                and username = #{po.username}
+            </if>
+            <if test="po.permits != null">
+                and permits = #{po.permits}
+            </if>
+            <if test="po.isCheckedIn != null">
+                and isCheckedIn = #{po.isCheckedIn}
+            </if>
+            <if test="po.isDriving != null">
+                and isDriving = #{po.isDriving}
+            </if>
+        </where>
+        ORDER BY userID
+        OFFSET #{pageNo} ROWS
+        FETCH NEXT #{pageSize} ROWS ONLY
+    </select>
+
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from User
+        <where>
+            <if test="userID != null">
+                and userID = #{userID}
+            </if>
+            <if test="username != null and username != ''">
+                and username = #{username}
+            </if>
+            <if test="permits != null">
+                and permits = #{permits}
+            </if>
+            <if test="isCheckedIn != null">
+                and isCheckedIn = #{isCheckedIn}
+            </if>
+            <if test="isDriving != null">
+                and isDriving = #{isDriving}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insert" keyProperty="userID" useGeneratedKeys="true">
+        insert into User(username,permits,isCheckedIn,isDriving)
+        values (#{username},#{permits},#{isCheckedIn},#{isDriving})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="userID" useGeneratedKeys="true">
+        insert into User(username,permits,isCheckedIn,isDriving)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.username},#{entity.permits},#{entity.isCheckedIn},#{entity.isDriving})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="userID" useGeneratedKeys="true">
+        insert into User(username,permits,isCheckedIn,isDriving)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.username},#{entity.permits},#{entity.isCheckedIn},#{entity.isDriving})
+        </foreach>
+        on duplicate key update
+        username = values(username)permits = values(permits)isCheckedIn = values(isCheckedIn)isDriving = values(isDriving)
+    </insert>
+
+    <update id="update">
+        update User
+        <set>
+            <if test="username != null and username != ''">
+                username = #{username},
+            </if>
+            <if test="permits != null">
+                permits = #{permits},
+            </if>
+            <if test="isCheckedIn != null">
+                isCheckedIn = #{isCheckedIn},
+            </if>
+            <if test="isDriving != null">
+                isDriving = #{isDriving},
+            </if>
+        </set>
+        where userID = #{userID}
+    </update>
+
+    <delete id="deleteById">
+        delete from User where userID = #{userID}
+    </delete>
+
+</mapper>
+
