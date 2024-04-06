@@ -5,6 +5,7 @@ import 'leaflet/dist/leaflet.css'; // Import Leaflet styles
 import './Home.css';
 import L from 'leaflet';
 import getAllParkingLots from "../api/getDatabase";
+import ParkingLotOptions from "./ParkingLotOptions";
 
 delete L.Icon.Default.prototype._getIconUrl;
 
@@ -19,8 +20,7 @@ const Home = () => {
     const [parkingLots, setParkingLots] = useState([]);
     const [userLocation, setUserLocation] = useState(null);
     const [userId, setUserId] = useState('');
-    const remoteStorage = new RemoteStorage({userId: 0})
-
+    const remoteStorage = new RemoteStorage({userId: 1})
 
     // This would be fetched from an API
     useEffect(() => {
@@ -41,6 +41,17 @@ const Home = () => {
             sessionStorage.setItem('userId', id);
         }
         setUserId(id);
+
+        const setRootUser = async() => {
+            const rootUserId = await remoteStorage.getItem('rootUserId');
+            console.log(rootUserId);
+            if (!rootUserId) {
+                console.log(id);
+                await remoteStorage.setItem('rootUserId', id);
+            }
+        }
+        setRootUser();
+
         const fetchParkingLots = async () => {
             try {
                 // Check if we already have the parking lots data in remoteStorage
@@ -61,16 +72,27 @@ const Home = () => {
                 console.error('Failed to fetch parking lots:', error);
             }
         };
-        // const fetchParkingLots = async () => {
-        //     try {
-        //             const fetchedParkingLots = await getAllParkingLots();
-        //             setParkingLots(fetchedParkingLots);
-        //         }
-        //     } catch (error) {
-        //         console.error('Failed to fetch parking lots:', error);
-        //     }
-        // };
         fetchParkingLots();
+
+        const routineFetchParkingLots = async () => {
+            const rootUserId = await remoteStorage.getItem('rootUserId');
+            if (rootUserId === id) {
+                try {
+                    console.log("Routine Fetch")
+                    const fetchedParkingLots = await getAllParkingLots();
+                    await remoteStorage.setItem('parkingLots', fetchedParkingLots);
+                } catch (error) {
+                    console.error('Failed to fetch parking lots:', error);
+                }
+            }
+            const cachedParkingLots = await remoteStorage.getItem('parkingLots');
+            setParkingLots(cachedParkingLots);
+        };
+
+
+        const fetchParkingId = setInterval(() => {
+            routineFetchParkingLots(); // Then fetch every minute
+        }, 5000); // 60000 milliseconds = 1 minute
 
         const updateLocation = () => {
             if ('geolocation' in navigator) {
@@ -97,6 +119,7 @@ const Home = () => {
         // Cleanup interval on component unmount
         return () => {
             clearInterval(intervalId);
+            clearInterval(fetchParkingId)
         };
     }, []);
 
@@ -117,17 +140,19 @@ const Home = () => {
             />
             <MapContainer center={[33.775237150193355, -84.3936369094809]} zoom={13} className="map-view">
                 <TileLayer
+                    // url = "https://tile.openstreetmap.org/{z}/{x}/{y}.png"
                     url="https://api.mapbox.com/styles/v1/jodi2023/cltpmm7k600et01p5e95pbodv/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1Ijoiam9kaTIwMjMiLCJhIjoiY2x0cGlnMHN5MHJteTJrbmlvaWh0a2MxdyJ9.M_ptTEE9hDlCk8g8_73j4g"
-                    // url="https://api.mapbox.com/styles/v1/mapbox/streets-v12/tiles/{tilesize}/{z}/{x}/{y}{@2x}?access_token=pk.eyJ1Ijoiam9kaTIwMjMiLCJhIjoiY2x0cGtqNHhxMHN1cjJxdDBlMHY5MHAxdyJ9.SVebeO8ZkGbYwkYswcPHcA"
-                    // attribution="Map data &copy; OpenStreetMap contributors, Imagery © Mapbox"
-                    // tileSize={512}
-                    // zoomOffset={-1}
-                    // detectRetina={true}
                 />
 
                 {parkingLots.map((lot) => (
                     <Marker key={lot.id} position={lot.coordinates}>
-                        <Popup>{lot.name}</Popup>
+                        <Popup>
+                            <div>
+                                <h2>{lot.name}</h2> {/* Parking lot name */}
+                                <p>Location: {lot.location}</p> {/* Additional detail: ID */}
+                                <p>Available Spots: {lot.availableSpots}</p> {/* Additional detail: ID */}
+                            </div>
+                        </Popup>
                     </Marker>
                 ))}
 
@@ -158,13 +183,14 @@ const Home = () => {
                     />
                 </div>
 
-                <div className="parking-lots-list">
-                    {parkingLots.map((lot) => (
-                        <div key={lot.id} className={`parking-lot ${getOccupancyColor(lot.occupancy)}`}>
-                            {lot.name} - {lot.occupancy}% Occupancy
-                        </div>
-                    ))}
-                </div>
+                <ParkingLotOptions parkingLots={parkingLots} getOccupancyColor={getOccupancyColor} />
+                {/*<div className="parking-lots-list">*/}
+                {/*    {parkingLots.map((lot) => (*/}
+                {/*    <div key={lot.id} className={`parking-lot ${getOccupancyColor(lot.occupancy)}`}>*/}
+                {/*        {lot.name} - {lot.occupancy}% Occupancy*/}
+                {/*    </div>*/}
+                {/*    ))}*/}
+                {/*</div>*/}
             </div>
             {/* More content that should scroll over the map */}
         </div>

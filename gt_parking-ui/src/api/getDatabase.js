@@ -1,5 +1,5 @@
 async function getAllParkingLots() {
-    const get_all_parking_lot_url = 'https://127.0.0.1:8443/parkinglots';
+    const get_all_parking_lot_url = 'https://127.0.0.1:8443/parkinglots/availableSpotsRanking';
     try {
         // const response = await fetch(get_all_parking_lot_url);
         const response = await fetch(get_all_parking_lot_url);
