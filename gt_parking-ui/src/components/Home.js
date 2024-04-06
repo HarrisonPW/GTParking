@@ -131,13 +131,6 @@ const Home = () => {
 
     return (
         <div className="home-container">
-            <input
-                type="text"
-                value={destination}
-                onChange={(e) => setDestination(e.target.value)}
-                placeholder="Where are you going to?"
-                className="destination-input"
-            />
             <MapContainer center={[33.775237150193355, -84.3936369094809]} zoom={13} className="map-view">
                 <TileLayer
                     // url = "https://tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -172,7 +165,6 @@ const Home = () => {
             </MapContainer>
 
             <div className="overlay-container">
-                {/* Put your scrollable content here */}
                 <div className="search-bar">
                     <input
                         type="text"
@@ -184,13 +176,6 @@ const Home = () => {
                 </div>
 
                 <ParkingLotOptions parkingLots={parkingLots} getOccupancyColor={getOccupancyColor} />
-                {/*<div className="parking-lots-list">*/}
-                {/*    {parkingLots.map((lot) => (*/}
-                {/*    <div key={lot.id} className={`parking-lot ${getOccupancyColor(lot.occupancy)}`}>*/}
-                {/*        {lot.name} - {lot.occupancy}% Occupancy*/}
-                {/*    </div>*/}
-                {/*    ))}*/}
-                {/*</div>*/}
             </div>
             {/* More content that should scroll over the map */}
         </div>

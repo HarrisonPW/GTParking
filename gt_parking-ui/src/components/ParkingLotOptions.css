@@ -5,13 +5,17 @@
     bottom: 0;
     left: 0;
     width: 100%;
-    max-height: 50%; /* Adjust as needed */
+    max-height: 40%;
     overflow-y: auto; /* Make it scrollable */
     background: #1c2129;
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
     padding-top: 20px; /* Space at the top inside the container */
     box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5); /* Soft shadow at the top */
+}
+.parking-lots-options.minimized {
+    height: 3%; /* Height of the title bar */
+    overflow: hidden; /* Hide the overflow content */
 }
 
 .parking-lot-title {
@@ -20,6 +24,7 @@
     font-size: 16px;
     font-family: Actor;
     font-weight: 400;
+    cursor: pointer;
 }
 
 .parking-lot {
@@ -29,13 +34,14 @@
     margin: 10px;
     padding: 10px;
     border-radius: 10px;
-    color: white; /* Text color */
+    color: #E2DFD2;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); /* Shadow for each item */
+    font-family: Actor;
 }
 
 .occupancy-indicator {
-    width: 20px; /* Adjust size as needed */
-    height: 20px; /* Adjust size as needed */
+    width: 20px;
+    height: 20px;
     border-radius: 50%;
     margin-right: 10px;
     flex-shrink: 0; /* Prevents the indicator from shrinking */
@@ -51,27 +57,29 @@
 
 /* Color coding for the occupancy indicator */
 .green {
-    background-color: #4CAF50;
+    background-color: #87e075;
+    color: #4d4d4d;
 }
 
 .yellow {
-    background-color: #FFEB3B;
+    background-color: #e0d575;
+    color: #4d4d4d;
 }
 
 .red {
-    background-color: #F44336;
+    background-color: #e07575;
 }
 
 .parking-lot.selected {
-    background-color: #666; /* Or any other color to indicate selection */
-    /* Add more styles if needed */
+    background-color: #a7acb8; /* #b6bfcf color to indicate selection */
+
 }
 
 .map-buttons {
     display: flex;
     justify-content: space-around;
     padding: 10px;
-    background: #222; /* Same as header for consistency */
+    background: #222;
 }
 
 .map-buttons button {
@@ -91,8 +99,7 @@
     margin-right: 5px;
 }
 
-/* Add :hover styles for buttons if desired */
+/* Add :hover styles  */
 .map-buttons button:hover {
     background-color: #666;
 }
-

@@ -30,10 +30,12 @@
     width: calc(100% - 20px);
     padding: 10px;
     margin-bottom: 20px;
+    font-family: Actor;
     
   }
-  
-  /*.parking-lots-list {*/
+
+
+/*.parking-lots-list {*/
   /*  display: flex;*/
   /*  flex-direction: column;*/
   /*  width: calc(100% - 20px);*/
