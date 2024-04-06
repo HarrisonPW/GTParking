@@ -4,6 +4,8 @@
 npm install leaflet@latest react-leaflet@latest \
 npm install react-router-dom \
 npm install fetch \
+npm install remote-storage\
+npm install cors\
 npm start (to start the ap) 
 
 

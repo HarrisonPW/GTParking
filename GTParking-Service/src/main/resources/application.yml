@@ -4,7 +4,7 @@ spring:
   datasource:
     url: jdbc:sqlserver://parkingsystem.c5s8024yq9iy.us-east-1.rds.amazonaws.com:1433;databaseName=ParkingSystem
     username: admin
-    password: xxxxxxxxx
+    password: xxxxxxxx
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
   redis:
     host: 127.0.0.1

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, CircleMarker } from 'react-leaflet';
+import { RemoteStorage } from 'remote-storage'
 import 'leaflet/dist/leaflet.css'; // Import Leaflet styles
 import './Home.css';
 import L from 'leaflet';
@@ -18,6 +19,7 @@ const Home = () => {
     const [parkingLots, setParkingLots] = useState([]);
     const [userLocation, setUserLocation] = useState(null);
     const [userId, setUserId] = useState('');
+    const remoteStorage = new RemoteStorage({userId: 0})
 
 
     // This would be fetched from an API
@@ -33,22 +35,42 @@ const Home = () => {
         function generateUniqueId() {
             return Date.now().toString(36) + Math.random().toString(36).substr(2);
         }
-         let id = sessionStorage.getItem('userId');
-            if (!id) {
-                id = generateUniqueId();
-                sessionStorage.setItem('userId', id);
-            }
-            setUserId(id);
+        let id = sessionStorage.getItem('userId');
+        if (!id) {
+            id = generateUniqueId();
+            sessionStorage.setItem('userId', id);
+        }
+        setUserId(id);
         const fetchParkingLots = async () => {
             try {
-                process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
-                const fetchedParkingLots = await getAllParkingLots();
-                setParkingLots(fetchedParkingLots);
+                // Check if we already have the parking lots data in remoteStorage
+                const cachedParkingLots = await remoteStorage.getItem('parkingLots');
+                console.log(cachedParkingLots)
+                if (cachedParkingLots) {
+                    // If we do, use the cached data instead of fetching it again
+                    console.log('cached');
+                    setParkingLots(cachedParkingLots);
+                } else {
+                    console.log('fetching');
+                    // If not, fetch the data and store it in both state and remoteStorage
+                    const fetchedParkingLots = await getAllParkingLots();
+                    await remoteStorage.setItem('parkingLots', fetchedParkingLots);
+                    setParkingLots(fetchedParkingLots);
+                }
             } catch (error) {
                 console.error('Failed to fetch parking lots:', error);
             }
         };
-        // fetchParkingLots();
+        // const fetchParkingLots = async () => {
+        //     try {
+        //             const fetchedParkingLots = await getAllParkingLots();
+        //             setParkingLots(fetchedParkingLots);
+        //         }
+        //     } catch (error) {
+        //         console.error('Failed to fetch parking lots:', error);
+        //     }
+        // };
+        fetchParkingLots();
 
         const updateLocation = () => {
             if ('geolocation' in navigator) {
@@ -73,7 +95,9 @@ const Home = () => {
         const intervalId = setInterval(updateLocation, 5000);
 
         // Cleanup interval on component unmount
-        return () => clearInterval(intervalId);
+        return () => {
+            clearInterval(intervalId);
+        };
     }, []);
 
     const getOccupancyColor = (occupancy) => {
@@ -108,17 +132,17 @@ const Home = () => {
                 ))}
 
                 {userLocation && (
-                   <CircleMarker
-                    center={userLocation}
-                    radius={10} // Radius in pixels
-                    color="red"
-                    fillColor="#f03"
-                    fillOpacity={0.5}
-                  >
-                    <Popup>
-                      User ID: {userId}
-                    </Popup>
-                  </CircleMarker>
+                    <CircleMarker
+                        center={userLocation}
+                        radius={10} // Radius in pixels
+                        color="red"
+                        fillColor="#f03"
+                        fillOpacity={0.5}
+                    >
+                        <Popup>
+                            User ID: {userId}
+                        </Popup>
+                    </CircleMarker>
                 )}
             </MapContainer>
 
