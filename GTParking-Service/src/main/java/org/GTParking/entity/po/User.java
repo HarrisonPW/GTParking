@@ -10,7 +10,7 @@ import java.util.Queue;
 public class User implements Serializable {
     private static final long serialVersionUID = 7602052318242025807L;
 
-    private Integer userid;
+    private String userid;
 
     private String username;
 

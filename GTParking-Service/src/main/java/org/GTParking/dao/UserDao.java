@@ -6,12 +6,12 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 public interface UserDao {
-    User queryById(Integer userid);
+    User queryById(String userid);
 
     int insert(User user);
 
     int update(User user);
 
-    int deleteById(Integer userid);
+    int deleteById(String userid);
 }
 

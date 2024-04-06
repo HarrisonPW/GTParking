@@ -26,7 +26,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public User queryUserVById(Integer userid) {
+    public User queryUserVById(String userid) {
         return this.userDao.queryById(userid);
     }
 
@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean deleteUserById(Integer userid) {
+    public boolean deleteUserById(String userid) {
         return this.userDao.deleteById(userid) > 0;
     }
 

@@ -7,13 +7,13 @@ import org.GTParking.entity.request.UserRequest;
 import java.util.Date;
 
 public interface UserService {
-    User queryUserVById(Integer userid);
+    User queryUserVById(String userid);
 
     User insertUser(User user);
 
     User updateUser(User user);
 
-    boolean deleteUserById(Integer userid);
+    boolean deleteUserById(String userid);
 
 //    True if there's an update to the checked in value, False if not.
     boolean updateLocation(User user, Date timestamp, Double latitude, Double longitude);
