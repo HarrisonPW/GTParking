@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.GTParking.dao.UserdetailsDao">
+
+    <resultMap type="org.GTParking.entity.po.Userdetails" id="UserdetailsMap">
+        <result property="userid" column="userid" jdbcType="INTEGER"/>
+        <result property="username" column="username" jdbcType="VARCHAR"/>
+        <result property="permits" column="permits" jdbcType="VARCHAR"/>
+        <result property="path" column="path" jdbcType="VARCHAR"/>
+        <result property="ischeckedin" column="isCheckedIn" jdbcType="INTEGER"/>
+        <result property="isdriving" column="isDriving" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <select id="queryById" resultMap="UserdetailsMap">
+        select
+            userid,username,permits,path,isCheckedIn,isDriving
+        from UserDetails
+        where userid = #{userid}
+    </select>
+
+    <select id="queryAllByLimit" resultMap="UserdetailsMap">
+        select
+        userid,username,permits,path,isCheckedIn,isDriving
+        from UserDetails
+        <where>
+            <if test="po.userid != null and po.userid != ''">
+                and userid = #{po.userid}
+            </if>
+            <if test="po.username != null and po.username != ''">
+                and username = #{po.username}
+            </if>
+            <if test="po.permits != null and po.permits != ''">
+                and permits = #{po.permits}
+            </if>
+            <if test="po.path != null and po.path != ''">
+                and path = #{po.path}
+            </if>
+            <if test="po.ischeckedin != null">
+                and isCheckedIn = #{po.ischeckedin}
+            </if>
+            <if test="po.isdriving != null">
+                and isDriving = #{po.isdriving}
+            </if>
+        </where>
+        ORDER BY userid
+        OFFSET #{pageNo} ROWS
+        FETCH NEXT #{pageSize} ROWS ONLY
+    </select>
+
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from UserDetails
+        <where>
+            <if test="userid != null and userid != ''">
+                and userid = #{userid}
+            </if>
+            <if test="username != null and username != ''">
+                and username = #{username}
+            </if>
+            <if test="permits != null and permits != ''">
+                and permits = #{permits}
+            </if>
+            <if test="path != null and path != ''">
+                and path = #{path}
+            </if>
+            <if test="ischeckedin != null">
+                and isCheckedIn = #{ischeckedin}
+            </if>
+            <if test="isdriving != null">
+                and isDriving = #{isdriving}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insert" keyProperty="userid" useGeneratedKeys="true">
+        insert into UserDetails(username,permits,path,isCheckedIn,isDriving)
+        values (#{username}, #{permits}, #{path}, #{ischeckedin}, #{isdriving})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="userid" useGeneratedKeys="true">
+        insert into UserDetails(username,permits,path,isCheckedIn,isDriving)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.username},#{entity.permits},#{entity.path},#{entity.ischeckedin},#{entity.isdriving})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="userid" useGeneratedKeys="true">
+        insert into UserDetails(username,permits,path,isCheckedIn,isDriving)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.username},#{entity.permits},#{entity.path},#{entity.ischeckedin},#{entity.isdriving})
+        </foreach>
+        on duplicate key update
+        username = values(username)permits = values(permits)path = values(path)isCheckedIn =
+        values(isCheckedIn)isDriving = values(isDriving)
+    </insert>
+
+    <update id="update">
+        update UserDetails
+        <set>
+            <if test="username != null and username != ''">
+                username = #{username},
+            </if>
+            <if test="permits != null and permits != ''">
+                permits = #{permits},
+            </if>
+            <if test="path != null and path != ''">
+                path = #{path},
+            </if>
+            <if test="ischeckedin != null">
+                isCheckedIn = #{ischeckedin},
+            </if>
+            <if test="isdriving != null">
+                isDriving = #{isdriving},
+            </if>
+        </set>
+        where userid = #{userid}
+    </update>
+
+    <delete id="deleteById">
+        delete from UserDetails where userid = #{userid}
+    </delete>
+
+</mapper>
+

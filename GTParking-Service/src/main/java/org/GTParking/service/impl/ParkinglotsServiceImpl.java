@@ -7,6 +7,7 @@ import org.GTParking.dao.ParkinglotsDao;
 import org.GTParking.entity.request.ParkinglotsRequest;
 import org.GTParking.entity.request.QueryAllByAvailableSpotsRankingRequest;
 import org.GTParking.service.ParkinglotsService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -26,7 +27,8 @@ public class ParkinglotsServiceImpl implements ParkinglotsService {
 
     @Override
     public PageResponse<Parkinglots> queryByPage(ParkinglotsRequest parkinglotsRequest) {
-        Parkinglots parkinglots = ParkinglotConverter.INSTANCE.convertParkinglotsRequestToParkinglot(parkinglotsRequest);
+        Parkinglots parkinglots = new Parkinglots();
+        BeanUtils.copyProperties(parkinglotsRequest, parkinglots);
         PageResponse<Parkinglots> pageResponse = new PageResponse<>();
         pageResponse.setCurrent(parkinglotsRequest.getPageNo());
         pageResponse.setPageSize(parkinglotsRequest.getPageSize());
@@ -57,7 +59,8 @@ public class ParkinglotsServiceImpl implements ParkinglotsService {
 
     @Override
     public PageResponse<Parkinglots> queryAllByAvailableSpotsRanking(QueryAllByAvailableSpotsRankingRequest parkinglotsRequest) {
-        Parkinglots parkinglots = ParkinglotConverter.INSTANCE.convertQueryAllByAvailableSpotsRankingRequestToParkinglot(parkinglotsRequest);
+        Parkinglots parkinglots = new Parkinglots();
+        BeanUtils.copyProperties(parkinglotsRequest, parkinglots);
         PageResponse<Parkinglots> pageResponse = new PageResponse<>();
         pageResponse.setCurrent(parkinglotsRequest.getPageNo());
         pageResponse.setPageSize(parkinglotsRequest.getPageSize());
