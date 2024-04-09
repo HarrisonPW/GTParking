@@ -15,12 +15,39 @@ L.Icon.Default.mergeOptions({
     shadowUrl: require('leaflet/dist/images/marker-shadow.png')
 });
 
+const greenIcon = new L.Icon({
+  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41]
+});
+
+const yellowIcon = new L.Icon({
+  iconUrl: 'https://github.com/pointhi/leaflet-color-markers/blob/master/img/marker-icon-2x-gold.png?raw=true',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41]
+});
+
+const redIcon = new L.Icon({
+  iconUrl: 'https://github.com/pointhi/leaflet-color-markers/blob/master/img/marker-icon-2x-red.png?raw=true',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41]
+});
+
 const Home = () => {
     const [destination, setDestination] = useState('');
     const [parkingLots, setParkingLots] = useState([]);
     const [userLocation, setUserLocation] = useState(null);
     const [userId, setUserId] = useState('');
-    const remoteStorage = new RemoteStorage({userId: 1})
+    const remoteStorage = new RemoteStorage({userId: 2})
 
     // This would be fetched from an API
     useEffect(() => {
@@ -129,6 +156,16 @@ const Home = () => {
         return 'red';
     };
 
+    function getOccupancyIcon(occupancy) {
+    if (occupancy < 40) {
+        return greenIcon;
+    } else if (occupancy < 70) {
+        return yellowIcon;
+    } else {
+        return redIcon;
+    }
+}
+
     return (
         <div className="home-container">
             <MapContainer center={[33.775237150193355, -84.3936369094809]} zoom={13} className="map-view">
@@ -138,7 +175,7 @@ const Home = () => {
                 />
 
                 {parkingLots.map((lot) => (
-                    <Marker key={lot.id} position={lot.coordinates}>
+                    <Marker key={lot.id} position={lot.coordinates} icon={getOccupancyIcon(lot.occupancy)}>
                         <Popup>
                             <div>
                                 <h2>{lot.name}</h2> {/* Parking lot name */}
