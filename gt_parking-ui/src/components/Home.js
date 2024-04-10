@@ -48,6 +48,7 @@ const Home = () => {
     const [userLocation, setUserLocation] = useState(null);
     const [userId, setUserId] = useState('');
     const remoteStorage = new RemoteStorage({userId: 2})
+    const [parkingStatus, setParkingStatus] = useState({ isParked: false, parkingLotName: '' });
 
     // This would be fetched from an API
     useEffect(() => {
@@ -143,11 +144,25 @@ const Home = () => {
         // Set an interval to update location every 5 seconds
         const intervalId = setInterval(updateLocation, 5000);
 
+        // Set the user's Parking Status
+        const fetchParkingStatus = async () => {
+            try {
+                const data = {isParked: true, parkingLotName: 'XX' } // Get the parking status (DUMMY DATA)
+                setParkingStatus({ isParked: data.isParked, parkingLotName: data.parkingLotName });
+            } catch (error) {
+                console.error('Failed to fetch parking status:', error);
+            }
+        };
+
+        fetchParkingStatus();
+
         // Cleanup interval on component unmount
         return () => {
             clearInterval(intervalId);
             clearInterval(fetchParkingId)
         };
+
+
     }, []);
 
     const getOccupancyColor = (occupancy) => {
@@ -157,14 +172,15 @@ const Home = () => {
     };
 
     function getOccupancyIcon(occupancy) {
-    if (occupancy < 40) {
-        return greenIcon;
-    } else if (occupancy < 70) {
-        return yellowIcon;
-    } else {
-        return redIcon;
+        if (occupancy < 40) {
+            return greenIcon;
+        } else if (occupancy < 70) {
+            return yellowIcon;
+        } else {
+            return redIcon;
+        }
     }
-}
+
 
     return (
         <div className="home-container">
@@ -202,15 +218,18 @@ const Home = () => {
             </MapContainer>
 
             <div className="overlay-container">
-                <div className="search-bar">
-                    <input
-                        type="text"
-                        value={destination}
-                        onChange={(e) => setDestination(e.target.value)}
-                        placeholder="Where are you going to?"
-                        className="destination-input"
-                    />
+                <div className={`statusBar ${parkingStatus.isParked  ? 'parked' : 'notParked'}`}>
+                    {parkingStatus.isParked ? `Parked at: ${parkingStatus.parkingLotName}` : 'Not parked'}
                 </div>
+                {/*<div className="search-bar">*/}
+                {/*    <input*/}
+                {/*        type="text"*/}
+                {/*        value={destination}*/}
+                {/*        onChange={(e) => setDestination(e.target.value)}*/}
+                {/*        placeholder="Where are you going to?"*/}
+                {/*        className="destination-input"*/}
+                {/*    />*/}
+                {/*</div>*/}
 
                 <ParkingLotOptions parkingLots={parkingLots} getOccupancyColor={getOccupancyColor} />
             </div>

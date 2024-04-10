@@ -34,30 +34,25 @@
     
   }
 
+.statusBar {
+  position: absolute;
+  padding: 10px;
+  margin: 5px 5px;
+  border-radius: 50px;
+  text-align: center;
+  font-family: Actor;
+  color:  white;
+  right: 0;
+  width: 75%;
+  font-weight: 400;
+}
 
-/*.parking-lots-list {*/
-  /*  display: flex;*/
-  /*  flex-direction: column;*/
-  /*  width: calc(100% - 20px);*/
-  /*}*/
-  
-  /*.parking-lot {*/
-  /*  padding: 10px;*/
-  /*  margin-bottom: 10px;*/
-  /*  border-radius: 5px;*/
-  /*  color: white;*/
-  /*}*/
-  
-  /*.green {*/
-  /*  background-color: #4CAF50;*/
-  /*}*/
-  
-  /*.yellow {*/
-  /*  background-color: #FFEB3B;*/
-  /*  color: black; !* Ensures text is readable on a light background *!*/
-  /*}*/
-  
-  /*.red {*/
-  /*  background-color: #F44336;*/
-  /*}*/
-  
+.statusBar.notParked {
+  background-color: rgba(28, 33, 41, 0.4);
+}
+
+.statusBar.parked {
+  background-color: rgba(46, 128, 46, 0.5);
+  /*color:  #E2DFD2;*/
+  /*border: 1px solid green;*/
+}
