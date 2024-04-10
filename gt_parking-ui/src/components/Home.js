@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, CircleMarker } from 'react-leaflet';
 import { RemoteStorage } from 'remote-storage'
 import 'leaflet/dist/leaflet.css'; // Import Leaflet styles
@@ -49,6 +49,10 @@ const Home = () => {
     const [userId, setUserId] = useState('');
     const remoteStorage = new RemoteStorage({userId: 2})
     const [parkingStatus, setParkingStatus] = useState({ isParked: false, parkingLotName: '' });
+    const [selectedLot, setSelectedLot] = useState(null);
+    const markerRefs = useRef({});
+
+
 
     // This would be fetched from an API
     useEffect(() => {
@@ -165,6 +169,13 @@ const Home = () => {
 
     }, []);
 
+    // Add reference for the selected lot and the popup marker
+    useEffect(() => {
+        if (selectedLot && markerRefs.current[selectedLot.id]) {
+            markerRefs.current[selectedLot.id].openPopup();
+        }
+    }, [selectedLot]);
+
     const getOccupancyColor = (occupancy) => {
         if (occupancy < 40) return 'green';
         if (occupancy < 70) return 'yellow';
@@ -191,7 +202,16 @@ const Home = () => {
                 />
 
                 {parkingLots.map((lot) => (
-                    <Marker key={lot.id} position={lot.coordinates} icon={getOccupancyIcon(lot.occupancy)}>
+                    <Marker key={lot.id} position={lot.coordinates} icon={getOccupancyIcon(lot.occupancy)}
+                            eventHandlers={{
+                                click: () => {
+                                    setSelectedLot(lot);
+                                },
+                            }}
+                            ref={(ref) => {
+                                markerRefs.current[lot.id] = ref;
+                            }}
+                    >
                         <Popup>
                             <div>
                                 <h2>{lot.name}</h2> {/* Parking lot name */}
@@ -231,7 +251,7 @@ const Home = () => {
                 {/*    />*/}
                 {/*</div>*/}
 
-                <ParkingLotOptions parkingLots={parkingLots} getOccupancyColor={getOccupancyColor} />
+                <ParkingLotOptions parkingLots={parkingLots} getOccupancyColor={getOccupancyColor} selectedLot={selectedLot} setSelectedLot={setSelectedLot} />
             </div>
             {/* More content that should scroll over the map */}
         </div>

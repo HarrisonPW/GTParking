@@ -1,12 +1,12 @@
 // src/components/ParkingLotsList.js
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './ParkingLotOptions.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faApple, faGoogle } from '@fortawesome/free-brands-svg-icons';
 
-const ParkingLotOptions = ({ parkingLots, getOccupancyColor }) => {
-    const [selectedLot, setSelectedLot] = useState(null);
+const ParkingLotOptions = ({ parkingLots, getOccupancyColor, selectedLot, setSelectedLot }) => {
+    // const [selectedLot, setSelectedLot] = useState(null);
     const [showMenu, setShowMenu] = useState(true);
 
     const handleSelectLot = (lot) => {
