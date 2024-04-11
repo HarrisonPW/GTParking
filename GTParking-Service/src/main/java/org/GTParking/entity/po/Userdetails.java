@@ -12,13 +12,13 @@ public class Userdetails implements Serializable {
 
     private String username;
 
-    private String permits;
+    private String permits = "";
 
-    private String path;
+    private String path = "";
 
-    private Integer ischeckedin;
+    private Integer ischeckedin =0;
 
-    private Integer isdriving;
+    private Integer isdriving = 0;
 
 }
 

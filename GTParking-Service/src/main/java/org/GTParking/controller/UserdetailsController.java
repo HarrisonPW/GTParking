@@ -4,9 +4,11 @@ import org.GTParking.bean.PageResponse;
 import org.GTParking.bean.Result;
 import org.GTParking.entity.po.Parkinglots;
 import org.GTParking.entity.po.Userdetails;
+import org.GTParking.entity.request.UpdateUserRequest;
 import org.GTParking.entity.request.UserdetailsRequest;
 import org.GTParking.service.UserdetailsService;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,6 +45,14 @@ public class UserdetailsController {
     public Result<Userdetails> edit(Userdetails userdetails) {
         return Result.ok(this.userdetailsService.update(userdetails));
     }
+
+    @PutMapping("trackingAlgo")
+    public Result<Userdetails> edit(Userdetails userdetails, Double longitude, Double latitude) {
+        UpdateUserRequest updateUserRequest = new UpdateUserRequest();
+        BeanUtils.copyProperties(userdetails, updateUserRequest);
+        return Result.ok(userdetailsService.updateLocation(updateUserRequest, latitude, longitude));
+    }
+
 
 
     @DeleteMapping
