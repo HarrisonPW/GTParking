@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  gt-parking-app:
+    image: harrison098/gt-parking:amd64
+    ports:
+      - "443:8443"
+    environment:
+      SPRING_DATASOURCE_PASSWORD: contact-the-repository-owner
+      SPRING_REDIS_HOST: redis
+      SPRING_REDIS_PORT: 6379
+      SERVER_PORT: 8443
+    depends_on:
+      - redis
+
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"

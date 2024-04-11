@@ -1,5 +1,8 @@
 package org.GTParking.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.GTParking.RedisComponent;
 import org.GTParking.bean.PageResponse;
 import org.GTParking.bean.Result;
 import org.GTParking.entity.po.Parkinglots;
@@ -21,14 +24,43 @@ public class ParkinglotsController {
     @Resource
     private ParkinglotsService parkinglotsService;
 
+    @Autowired
+    private RedisComponent redisComponent;
+
+    @Autowired
+    private ObjectMapper objectMapper;
+
 
     @GetMapping
     public Result<PageResponse<Parkinglots>> queryByPage(ParkinglotsRequest parkinglotsRequest) {
+        try {
+            Boolean flag = redisComponent.containsKey("parkinglots");
+            if (flag) {
+                String parkinglots = (String) redisComponent.getValue("parkinglots");
+                PageResponse<Parkinglots> parkinglotsPageResponse = objectMapper.readValue(parkinglots, PageResponse.class);
+                return Result.ok(parkinglotsPageResponse);
+            }
+            redisComponent.setKey("parkinglots", objectMapper.writeValueAsString(this.parkinglotsService.queryByPage(parkinglotsRequest)));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return Result.ok(this.parkinglotsService.queryByPage(parkinglotsRequest));
     }
 
     @GetMapping("availableSpotsRanking")
     public Result<PageResponse<Parkinglots>> queryAllByAvailableSpotsRanking(QueryAllByAvailableSpotsRankingRequest queryAllByAvailableSpotsRankingRequest) {
+        try {
+            Boolean flag = redisComponent.containsKey("parkinglotsRanking");
+            if (flag) {
+                String parkinglotsRanking = (String) redisComponent.getValue("parkinglotsRanking");
+                PageResponse<Parkinglots> parkinglotsPageResponse = objectMapper.readValue(parkinglotsRanking, PageResponse.class);
+                return Result.ok(parkinglotsPageResponse);
+            }
+            redisComponent.setKey("parkinglotsRanking", objectMapper.writeValueAsString(this.parkinglotsService.queryAllByAvailableSpotsRanking(queryAllByAvailableSpotsRankingRequest)));
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
         return Result.ok(this.parkinglotsService.queryAllByAvailableSpotsRanking(queryAllByAvailableSpotsRankingRequest));
     }
 
@@ -41,18 +73,24 @@ public class ParkinglotsController {
 
     @PostMapping
     public Result<Parkinglots> add(Parkinglots parkinglots) {
+        redisComponent.deleteKey("parkinglots");
+        redisComponent.deleteKey("parkinglotsRanking");
         return Result.ok(this.parkinglotsService.insert(parkinglots));
     }
 
 
     @PutMapping
     public Result<Parkinglots> edit(Parkinglots parkinglots) {
-        return Result.ok(this.parkinglotsService.update(parkinglots));
+        redisComponent.deleteKey("parkinglots");
+        redisComponent.deleteKey("parkinglotsRanking");
+        return Result.ok( this.parkinglotsService.update(parkinglots));
     }
 
 
     @DeleteMapping
     public Result<Boolean> deleteById(Integer id) {
+        redisComponent.deleteKey("parkinglots");
+        redisComponent.deleteKey("parkinglotsRanking");
         return Result.ok(this.parkinglotsService.deleteById(id));
     }
 

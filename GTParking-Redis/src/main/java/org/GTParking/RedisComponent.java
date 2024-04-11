@@ -10,11 +10,16 @@ public class RedisComponent {
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
 
-    public void setKey(String key, String value) {
+    public void setKey(String key, Object value) {
         redisTemplate.opsForValue().set(key, value);
     }
-
-    public String getKey(String key) {
-        return (String) redisTemplate.opsForValue().get(key);
+    public Boolean containsKey(String key) {
+        return redisTemplate.hasKey(key);
+    }
+    public void deleteKey(String key) {
+        redisTemplate.delete(key);
+    }
+    public Object getValue(String key) {
+        return redisTemplate.opsForValue().get(key);
     }
 }
