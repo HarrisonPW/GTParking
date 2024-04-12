@@ -1,6 +1,7 @@
 package org.GTParking.dao;
 
 import org.GTParking.entity.po.Parkinglots;
+import org.GTParking.entity.request.QueryAllByAvailableSpotsRankingRequest;
 import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
@@ -31,7 +32,7 @@ public interface ParkinglotsDao {
 
     int deleteById(Integer parkinglotid);
 
-    List<Parkinglots> queryAllByAvailableSpotsRanking(@Param("pageNo") Long pageNo, @Param("pageSize") Long pageSize);
+    List<Parkinglots> queryAllByAvailableSpotsRanking(@Param("po") Parkinglots sysUser, @Param("pageNo") Long pageNo, @Param("pageSize") Long pageSize);
 
 }
 

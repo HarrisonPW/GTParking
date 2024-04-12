@@ -24,5 +24,7 @@ public class Parkinglots implements Serializable {
 
     private Double YCoordinate;
 
+    private String permit;
+
 }
 

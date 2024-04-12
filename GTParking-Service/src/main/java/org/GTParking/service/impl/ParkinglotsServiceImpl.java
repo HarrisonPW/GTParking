@@ -66,7 +66,7 @@ public class ParkinglotsServiceImpl implements ParkinglotsService {
         pageResponse.setPageSize(parkinglotsRequest.getPageSize());
         Long pageStart = (parkinglotsRequest.getPageNo() - 1) * parkinglotsRequest.getPageSize();
         long total = this.parkinglotsDao.count(parkinglots);
-        List<Parkinglots> parkinglotsList = this.parkinglotsDao.queryAllByAvailableSpotsRanking(pageStart, parkinglotsRequest.getPageSize());
+        List<Parkinglots> parkinglotsList = this.parkinglotsDao.queryAllByAvailableSpotsRanking(parkinglots, pageStart, parkinglotsRequest.getPageSize());
         pageResponse.setTotal(total);
         pageResponse.setRecords(parkinglotsList);
         return pageResponse;
