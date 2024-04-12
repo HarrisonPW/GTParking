@@ -134,6 +134,9 @@ public class UserdetailsServiceImpl implements UserdetailsService {
 
     //    TODO: edge case: user passes by both Parking Lot 1 and Parking Lot 2 within the window, cannot determine which parked at.
     private Boolean updateCheckedin(Userdetails user, Integer isDriving, Integer prevIsDriving, ParkinglotsRequest parkinglotsRequest) {
+        if (prevIsDriving == null) {
+            return false;
+        }
         if (isDriving == 1 && prevIsDriving == 1) {
             return false;
         }
