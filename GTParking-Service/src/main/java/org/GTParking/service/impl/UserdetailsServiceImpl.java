@@ -1,7 +1,6 @@
 package org.GTParking.service.impl;
 
 import org.GTParking.bean.PageResponse;
-import org.GTParking.convert.UserdetailsConverter;
 import org.GTParking.dao.UserdetailsDao;
 import org.GTParking.entity.po.LocationTime;
 import org.GTParking.entity.po.Parkinglots;
@@ -16,11 +15,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 
@@ -90,7 +86,7 @@ public class UserdetailsServiceImpl implements UserdetailsService {
         ArrayList<LocationTime> arrayList = new ArrayList<>();
         arrayList.add(currLT);
         ArrayList<LocationTime> path = new ArrayList<>();
-        if (user.getPath().length() == 0) {
+        if (user.getPath() == null || user.getPath().length() == 0) {
             path = arrayList;
         } else {
             path = convertPathStringToList(user.getPath() + ";" + convertPathListToString(arrayList));
@@ -104,7 +100,6 @@ public class UserdetailsServiceImpl implements UserdetailsService {
     }
 
     private Boolean updateDrivingStatus(Userdetails user, ArrayList<LocationTime> path) {
-//        ArrayList<LocationTime> path = convertPathStringToList(user.getPath());
         Double speedThreshold = 2.0;
         if (path.size() <= 1) {
             userdetailsDao.update(user);
@@ -133,8 +128,8 @@ public class UserdetailsServiceImpl implements UserdetailsService {
         Integer prevIsDriving = user.getIsdriving();
         user.setIsdriving(isDriving);
         userdetailsDao.update(user);
-        return false;
-//        return updateCheckedin(user, isDriving, prevIsDriving, new ParkinglotsRequest());
+//        return false;
+        return updateCheckedin(user, isDriving, prevIsDriving, new ParkinglotsRequest());
     }
 
     //    TODO: edge case: user passes by both Parking Lot 1 and Parking Lot 2 within the window, cannot determine which parked at.
