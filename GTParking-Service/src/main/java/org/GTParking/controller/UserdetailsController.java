@@ -47,9 +47,7 @@ public class UserdetailsController {
     }
 
     @PutMapping("trackingAlgo")
-    public Result<Userdetails> edit(Userdetails userdetails, Double longitude, Double latitude) {
-        UpdateUserRequest updateUserRequest = new UpdateUserRequest();
-        BeanUtils.copyProperties(userdetails, updateUserRequest);
+    public Result<Userdetails> edit(UpdateUserRequest updateUserRequest, Double longitude, Double latitude) {
         return Result.ok(userdetailsService.updateLocation(updateUserRequest, latitude, longitude));
     }
 
