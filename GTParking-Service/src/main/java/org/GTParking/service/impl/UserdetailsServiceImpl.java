@@ -79,6 +79,8 @@ public class UserdetailsServiceImpl implements UserdetailsService {
             user = userdetails.get(0);
         } else {
             user.setUsername(userRequest.getUsername());
+            user.setIsdriving(0);
+            user.setIscheckedin(0);
             userdetailsDao.insert(user);
         }
 
