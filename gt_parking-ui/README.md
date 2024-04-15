@@ -1,14 +1,14 @@
 # Dependencies to install:
 ## Run these commands:
 
-npm install leaflet@latest react-leaflet@latest \
-npm install react-router-dom \
-npm install fetch \
-npm install --save @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons @fortawesome/react-fontawesome
-npm install @fortawesome/free-brands-svg-icons
-npm install remote-storage\
-npm install cors\
-npm start (to start the ap) 
+### `npm install leaflet@latest react-leaflet@latest`
+### `npm install react-router-dom`
+### `npm install fetch`
+### `npm install --save @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons @fortawesome/react-fontawesome`
+### `npm install @fortawesome/free-brands-svg-icons`
+### `npm install remote-storage`
+### `npm install cors`
+### `npm start` (to start the ap)
 
 
 
