@@ -6,6 +6,10 @@ import './Home.css';
 import L from 'leaflet';
 import getAllParkingLots from "../api/getDatabase";
 import ParkingLotOptions from "./ParkingLotOptions";
+import Filters from "./Filters";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
+
 
 delete L.Icon.Default.prototype._getIconUrl;
 
@@ -51,19 +55,13 @@ const Home = () => {
     const [parkingStatus, setParkingStatus] = useState({ isParked: false, parkingLotName: '' });
     const [selectedLot, setSelectedLot] = useState(null);
     const markerRefs = useRef({});
+    const [showFilters, setShowFilters] = useState(false);
+    const [selectedPermits, setSelectedPermits] = useState([]);
+    const [permits, setPermits] = useState(['AAAAAAAAAA', 'BDSDSDW', 'CDSDAewW']); //Dummy data to be filled
 
 
-
-    // This would be fetched from an API
+    // Fetched from an API
     useEffect(() => {
-        // Placeholder data
-        // const fetchedParkingLots = [
-        //   { id: 1, name: 'E52 Peters Parking Deck', occupancy: 8, coordinates: [33.775292682929816, -84.39363979653825] },
-        //   { id: 2, name: 'E40 Klaus Deck', occupancy: 52, coordinates: [33.78013695843671, -84.39842422570989] },
-        //   { id: 3, name: 'ER66 10th & Home', occupancy: 78, coordinates: [33.78190123308837, -84.39493615910393] },
-        //   { id: 4, name: 'Visitor\'s Parking 2', occupancy: 43, coordinates: [33.77388599065813, -84.39957233391993] },
-        //   // ...other parking lots
-        // ];
         function generateUniqueId() {
             return Date.now().toString(36) + Math.random().toString(36).substr(2);
         }
@@ -191,11 +189,37 @@ const Home = () => {
             return redIcon;
         }
     }
+    // If the user selects a permit,
+    // this functions called and the permit is added to the list of selected permits
+    const togglePermit = (permit) => {
+        setSelectedPermits((prevSelectedPermits) =>
+            prevSelectedPermits.includes(permit)
+                ? prevSelectedPermits.filter((p) => p !== permit)
+                : [...prevSelectedPermits, permit]
+        );
+    };
+
+    // Get the list of parking lots after applying filters
+    const isPermitMatch = (lotPermits, selectedPermits) => {
+        // If no permits are selected, show all lots
+        if (selectedPermits.length === 0) return true;
+        // Otherwise, check if the parking lot has some selected permit
+        return selectedPermits.some(permit => lotPermits.includes(permit));
+    };
+
+    // Function to filter parking lots based on selected permits
+    const getFilteredParkingLots = () => {
+        return parkingLots.filter(lot => isPermitMatch(lot.permits, selectedPermits));
+    };
 
 
     return (
         <div className="home-container">
-            <MapContainer center={[33.775237150193355, -84.3936369094809]} zoom={13} className="map-view">
+            <MapContainer center={[33.775237150193355, -84.3936369094809]} zoom={13} className="map-view" whenCreated={(mapInstance) => {
+                mapInstance.on('click', () => {
+                    setShowFilters(false);
+                });
+            }}>
                 <TileLayer
                     // url = "https://tile.openstreetmap.org/{z}/{x}/{y}.png"
                     url="https://api.mapbox.com/styles/v1/jodi2023/cltpmm7k600et01p5e95pbodv/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1Ijoiam9kaTIwMjMiLCJhIjoiY2x0cGlnMHN5MHJteTJrbmlvaWh0a2MxdyJ9.M_ptTEE9hDlCk8g8_73j4g"
@@ -241,6 +265,17 @@ const Home = () => {
                 <div className={`statusBar ${parkingStatus.isParked  ? 'parked' : 'notParked'}`}>
                     {parkingStatus.isParked ? `Parked at: ${parkingStatus.parkingLotName}` : 'Not parked'}
                 </div>
+
+                {/* Show the Filters on click */}
+                <button className="menu-button" onClick={() => setShowFilters(!showFilters)}>
+                    <FontAwesomeIcon icon={faBars} />
+                </button>
+
+                {/* Show the Filters if showFilters = true*/}
+                {showFilters && (
+                    <Filters permits={permits} selectedPermits={selectedPermits} togglePermit={togglePermit} />
+                )}
+
                 {/*<div className="search-bar">*/}
                 {/*    <input*/}
                 {/*        type="text"*/}

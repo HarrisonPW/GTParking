@@ -3,11 +3,10 @@
 .home-container {
   position: relative;
   width: 100%;
-  /* min-height: 100vh; Minimum height to fill the screen */
 }
   .map-view {
     width: 100%;
-    height: 100%; /* Full height */
+    height: 100%;
     position: fixed;
     top: 0;
     left: 0;
@@ -18,8 +17,7 @@
     position: absolute;
     top: 0;
     width: 100%;
-    z-index: 2; /* Above the map */
-    /* padding: 10px; */
+    z-index: 2;
   }
   
   .destination-input, .parking-lots-list {
@@ -42,8 +40,8 @@
   text-align: center;
   font-family: Actor;
   color:  white;
-  right: 0;
-  width: 75%;
+  right: 15%;
+  width: 60%;
   font-weight: 400;
 }
 
@@ -53,6 +51,20 @@
 
 .statusBar.parked {
   background-color: rgba(46, 128, 46, 0.5);
-  /*color:  #E2DFD2;*/
-  /*border: 1px solid green;*/
 }
+
+.menu-button {
+  padding: 10px 16px;
+  background-color: #1c2129;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  position: absolute;
+  top: 5px;
+  right: 2%;
+  z-index: 10;
+  font-family: Actor;
+  font-weight: 400;
+}
+
