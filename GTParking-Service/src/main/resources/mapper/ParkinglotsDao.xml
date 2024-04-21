@@ -11,6 +11,7 @@
         <result property="availableSpots" column="availableSpots" jdbcType="INTEGER"/>
         <result property="XCoordinate" column="XCoordinate" jdbcType="DOUBLE"/>
         <result property="YCoordinate" column="YCoordinate" jdbcType="DOUBLE"/>
+        <result property="permit" column="permit" jdbcType="VARCHAR"/>
     </resultMap>
 
     <select id="queryById" resultMap="ParkinglotsMap">
@@ -21,14 +22,15 @@
                currentSpotsNum,
                availableSpots,
                XCoordinate,
-               YCoordinate
+               YCoordinate,
+               permit
         from ParkingLots
         where parkinglotID = #{parkinglotid}
     </select>
 
     <select id="queryAllByLimit" resultMap="ParkinglotsMap">
         select
-        parkinglotID,name,location,totalSpotsNum,currentSpotsNum,availableSpots,XCoordinate,YCoordinate
+        parkinglotID,name,location,totalSpotsNum,currentSpotsNum,availableSpots,XCoordinate,YCoordinate,permit
         from ParkingLots
         <where>
             <if test="po.parkinglotid != null">
@@ -54,6 +56,9 @@
             </if>
             <if test="po.YCoordinate != null">
                 and YCoordinate = #{po.YCoordinate}
+            </if>
+            <if test="po.permit != null and po.permit != ''">
+                and permit = #{po.permit}
             </if>
         </where>
         ORDER BY parkinglotID
@@ -89,33 +94,36 @@
             <if test="YCoordinate != null">
                 and YCoordinate = #{YCoordinate}
             </if>
+            <if test="permit != null and permit != ''">
+                and permit = #{permit}
+            </if>
         </where>
     </select>
 
     <insert id="insert" keyProperty="parkinglotid" useGeneratedKeys="true">
         insert into ParkingLots(name, location, totalSpotsNum, currentSpotsNum, availableSpots, XCoordinate,
-                                YCoordinate)
+                                YCoordinate,permit)
         values (#{name}, #{location}, #{totalspotsnum}, #{currentspotsnum}, #{availableSpots}, #{XCoordinate},
-                #{YCoordinate})
+                #{YCoordinate},#{permit})
     </insert>
 
     <insert id="insertBatch" keyProperty="parkinglotid" useGeneratedKeys="true">
-        insert into ParkingLots(name,location,totalSpotsNum,currentSpotsNum,availableSpots,XCoordinate,YCoordinate)
+        insert into ParkingLots(name,location,totalSpotsNum,currentSpotsNum,availableSpots,XCoordinate,YCoordinate,permit)
         values
         <foreach collection="entities" item="entity" separator=",">
-            (#{entity.name},#{entity.location},#{entity.totalspotsnum},#{entity.currentspotsnum},#{entities.availableSpots},#{entity.XCoordinate},#{entity.YCoordinate})
+            (#{entity.name},#{entity.location},#{entity.totalspotsnum},#{entity.currentspotsnum},#{entities.availableSpots},#{entity.XCoordinate},#{entity.YCoordinate},#{entity.permit})
         </foreach>
     </insert>
 
     <insert id="insertOrUpdateBatch" keyProperty="parkinglotid" useGeneratedKeys="true">
-        insert into ParkingLots(name,location,totalSpotsNum,currentSpotsNum,availableSpots,XCoordinate,YCoordinate)
+        insert into ParkingLots(name,location,totalSpotsNum,currentSpotsNum,availableSpots,XCoordinate,YCoordinate,permit)
         values
         <foreach collection="entities" item="entity" separator=",">
-            (#{entity.name},#{entity.location},#{entity.totalspotsnum},#{entity.currentspotsnum},#{entities.availableSpots},#{entity.XCoordinate},#{entity.YCoordinate})
+            (#{entity.name},#{entity.location},#{entity.totalspotsnum},#{entity.currentspotsnum},#{entities.availableSpots},#{entity.XCoordinate},#{entity.YCoordinate},#{entity.permit})
         </foreach>
         on duplicate key update
         name = values(name)location = values(location)totalSpotsNum = values(totalSpotsNum)currentSpotsNum =
-        values(currentSpotsNum)
+        values(currentSpotsNum)availableSpots = values(availableSpots)XCoordinate = values(XCoordinate)YCoordinate = values(YCoordinate)permit = values(permit)
     </insert>
 
     <update id="update">
@@ -142,6 +150,9 @@
             <if test="YCoordinate != null">
                 YCoordinate = #{YCoordinate},
             </if>
+            <if test="permit != null and permit != ''">
+                permit = #{permit},
+            </if>
         </set>
         where parkinglotID = #{parkinglotid}
     </update>
@@ -154,14 +165,44 @@
 
     <select id="queryAllByAvailableSpotsRanking" resultMap="ParkinglotsMap">
         select parkinglotID,
-               name,
-               location,
-               totalSpotsNum,
-               currentSpotsNum,
-               availableSpots,
-               XCoordinate,
-               YCoordinate
+        name,
+        location,
+        totalSpotsNum,
+        currentSpotsNum,
+        availableSpots,
+        XCoordinate,
+        YCoordinate,
+        permit
         from ParkingLots
+        <where>
+            <if test="po.parkinglotid != null">
+                and parkinglotID = #{po.parkinglotid}
+            </if>
+            <if test="po.name != null and po.name != ''">
+                and name = #{po.name}
+            </if>
+            <if test="po.location != null and po.location != ''">
+                and location = #{po.location}
+            </if>
+            <if test="po.totalspotsnum != null">
+                and totalSpotsNum = #{po.totalspotsnum}
+            </if>
+            <if test="po.currentspotsnum != null">
+                and currentSpotsNum = #{po.currentspotsnum}
+            </if>
+            <if test="po.availableSpots != null">
+                and availableSpots = #{po.availableSpots}
+            </if>
+            <if test="po.XCoordinate != null">
+                and XCoordinate = #{po.XCoordinate}
+            </if>
+            <if test="po.YCoordinate != null">
+                and YCoordinate = #{po.YCoordinate}
+            </if>
+            <if test="po.permit != null and po.permit != ''">
+                and permit = #{po.permit}
+            </if>
+        </where>
         ORDER BY availableSpots DESC
         OFFSET #{pageNo} ROWS FETCH NEXT #{pageSize} ROWS ONLY;
     </select>

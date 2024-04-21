@@ -23,4 +23,6 @@ public class ParkinglotsRequest extends PageRequest implements Serializable {
     private Double XCoordinate;
 
     private Double YCoordinate;
+
+    private String permit;
 }
