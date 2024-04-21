@@ -11,7 +11,8 @@ async function getAllParkingLots() {
             occupancy: (oldData.currentspotsnum / oldData.totalspotsnum * 100).toFixed(2).replace(/[.,]00$/, ""),
             coordinates: [oldData.xcoordinate, oldData.ycoordinate],
             location: oldData.location,
-            availableSpots: oldData.availableSpots
+            availableSpots: oldData.availableSpots,
+            permit: oldData.permit
         }));
         return parkinglotData
     } catch (error) {

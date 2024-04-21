@@ -51,13 +51,14 @@ const Home = () => {
     const [parkingLots, setParkingLots] = useState([]);
     const [userLocation, setUserLocation] = useState(null);
     const [userId, setUserId] = useState('');
-    const remoteStorage = new RemoteStorage({userId: 2})
-    const [parkingStatus, setParkingStatus] = useState({ isParked: false, parkingLotName: '' });
+    const remoteStorage = new RemoteStorage({userId: 30})
+    const [parkingStatus, setParkingStatus] = useState({isParked: false});
     const [selectedLot, setSelectedLot] = useState(null);
     const markerRefs = useRef({});
     const [showFilters, setShowFilters] = useState(false);
     const [selectedPermits, setSelectedPermits] = useState([]);
-    const [permits, setPermits] = useState(['AAAAAAAAAA', 'BDSDSDW', 'CDSDAewW']); //Dummy data to be filled
+    const [permits, setPermits] = useState([]); //Dummy data to be filled
+    const [filteredParkingLots, setFilteredParkingLots] = useState([]);
 
 
     // Fetched from an API
@@ -120,6 +121,7 @@ const Home = () => {
         };
 
 
+
         const fetchParkingId = setInterval(() => {
             routineFetchParkingLots(); // Then fetch every minute
         }, 5000); // 60000 milliseconds = 1 minute
@@ -149,8 +151,8 @@ const Home = () => {
         // Set the user's Parking Status
         const fetchParkingStatus = async () => {
             try {
-                const data = {isParked: true, parkingLotName: 'XX' } // Get the parking status (DUMMY DATA)
-                setParkingStatus({ isParked: data.isParked, parkingLotName: data.parkingLotName });
+                const data = {isParked: false} // Get the parking status (DUMMY DATA)
+                setParkingStatus({ isParked: data.isParked});
             } catch (error) {
                 console.error('Failed to fetch parking status:', error);
             }
@@ -163,11 +165,16 @@ const Home = () => {
             clearInterval(intervalId);
             clearInterval(fetchParkingId)
         };
-
-
     }, []);
 
-    // Add reference for the selected lot and the popup marker
+    // Extract permits from parking lots whenever parking lots has an update
+    useEffect(() => {
+        const allPermits = parkingLots.map(lot => lot.permit);
+        const uniquePermits = Array.from(new Set(allPermits));
+        setPermits(uniquePermits);
+    },[parkingLots]);
+
+    // Add link for selecting a lot and the popup marker
     useEffect(() => {
         if (selectedLot && markerRefs.current[selectedLot.id]) {
             markerRefs.current[selectedLot.id].openPopup();
@@ -199,19 +206,16 @@ const Home = () => {
         );
     };
 
-    // Get the list of parking lots after applying filters
-    const isPermitMatch = (lotPermits, selectedPermits) => {
-        // If no permits are selected, show all lots
-        if (selectedPermits.length === 0) return true;
-        // Otherwise, check if the parking lot has some selected permit
-        return selectedPermits.some(permit => lotPermits.includes(permit));
-    };
-
-    // Function to filter parking lots based on selected permits
-    const getFilteredParkingLots = () => {
-        return parkingLots.filter(lot => isPermitMatch(lot.permits, selectedPermits));
-    };
-
+    // Filter parking lots based on selected permits
+    useEffect(() => {
+        const getFilteredParkingLots = () => {
+            // If no permits are selected, show all lots
+            if (selectedPermits.length === 0) return parkingLots;
+            // If there is a permit selection show only those with matching permits
+            return parkingLots.filter(lot => selectedPermits.includes(lot.permit));
+        };
+        setFilteredParkingLots(getFilteredParkingLots());
+    }, [selectedPermits, parkingLots]);
 
     return (
         <div className="home-container">
@@ -225,7 +229,7 @@ const Home = () => {
                     url="https://api.mapbox.com/styles/v1/jodi2023/cltpmm7k600et01p5e95pbodv/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1Ijoiam9kaTIwMjMiLCJhIjoiY2x0cGlnMHN5MHJteTJrbmlvaWh0a2MxdyJ9.M_ptTEE9hDlCk8g8_73j4g"
                 />
 
-                {parkingLots.map((lot) => (
+                {filteredParkingLots.map((lot) => (
                     <Marker key={lot.id} position={lot.coordinates} icon={getOccupancyIcon(lot.occupancy)}
                             eventHandlers={{
                                 click: () => {
@@ -241,6 +245,7 @@ const Home = () => {
                                 <h2>{lot.name}</h2> {/* Parking lot name */}
                                 <p>Location: {lot.location}</p> {/* Additional detail: ID */}
                                 <p>Available Spots: {lot.availableSpots}</p> {/* Additional detail: ID */}
+                                <p>Permit: {lot.permit}</p>
                             </div>
                         </Popup>
                     </Marker>
@@ -263,7 +268,7 @@ const Home = () => {
 
             <div className="overlay-container">
                 <div className={`statusBar ${parkingStatus.isParked  ? 'parked' : 'notParked'}`}>
-                    {parkingStatus.isParked ? `Parked at: ${parkingStatus.parkingLotName}` : 'Not parked'}
+                    {parkingStatus.isParked ? `Parked` : 'Not parked'}
                 </div>
 
                 {/* Show the Filters on click */}
@@ -286,7 +291,7 @@ const Home = () => {
                 {/*    />*/}
                 {/*</div>*/}
 
-                <ParkingLotOptions parkingLots={parkingLots} getOccupancyColor={getOccupancyColor} selectedLot={selectedLot} setSelectedLot={setSelectedLot} />
+                <ParkingLotOptions parkingLots={filteredParkingLots} getOccupancyColor={getOccupancyColor} selectedLot={selectedLot} setSelectedLot={setSelectedLot} />
             </div>
             {/* More content that should scroll over the map */}
         </div>
