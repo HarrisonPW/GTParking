@@ -8,4 +8,4 @@ Open the project in IntelliJ. Configure the datasource and redis parameters acco
 The Swagger service can be accessed at http://localhost:8082/swagger-ui.html# while running the application.
 
 ## Infrastructure
-<img width="729" alt="Screenshot 2024-04-07 at 11 37 27 AM" src="https://github.com/HarrisonPW/GTParking/assets/32474200/9ec9ff5f-e3bf-4376-b91a-08c93a8ad74c">
+<img width="848" alt="Screenshot 2024-04-28 at 11 31 40 AM" src="https://github.com/HarrisonPW/GTParking/assets/32474200/b0c52507-54ad-46e2-b39a-f80acffdefa5">
