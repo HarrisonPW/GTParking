@@ -32,7 +32,9 @@ Users hopping on Stinger buses after parking may cause the status to incorrectly
 
 ## Potential Work
 -Include additional information about situations when certain parking lots may be available for free
+
 -Provide confidence levels for availability estimations based on estimated completeness of tracking data
+
 -Reliably recognize users to continue using the same user ID in the database and be able to store their permit information
 
 ## Related Works
